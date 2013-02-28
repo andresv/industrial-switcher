@@ -12321,6 +12321,12 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 <packages>
 </packages>
 <symbols>
+<symbol name="GNDA">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.0922" y1="-0.508" x2="1.0922" y2="-0.508" width="0.254" layer="94"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="GNDA" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
 <symbol name="GND">
 <wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
 <text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
@@ -12348,6 +12354,19 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 </symbol>
 </symbols>
 <devicesets>
+<deviceset name="GNDA" prefix="GND">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="GNDA" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 <deviceset name="GND" prefix="GND">
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
@@ -44160,6 +44179,53 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="SparkFun-Passives">
+<description>&lt;h3&gt;SparkFun Electronics' preferred foot prints&lt;/h3&gt;
+In this library you'll find resistors, capacitors, inductors, test points, jumper pads, etc.&lt;br&gt;&lt;br&gt;
+We've spent an enormous amount of time creating and checking these footprints and parts, but it is the end user's responsibility to ensure correctness and suitablity for a given componet or application. If you enjoy using this library, please buy one of our products at www.sparkfun.com.
+&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Licensing:&lt;/b&gt; CC v3.0 Share-Alike You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
+<packages>
+<package name="GND_CONNECT">
+<smd name="1" x="-1.016" y="0" dx="1.016" dy="1.016" layer="1"/>
+<smd name="2" x="-1.016" y="-1.27" dx="1.016" dy="1.016" layer="1"/>
+<smd name="3" x="0.254" y="-0.635" dx="1.016" dy="1.016" layer="1"/>
+<text x="-0.889" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.143" y="-4.064" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="GND_CONNECT">
+<wire x1="5.08" y1="10.16" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-5.08" x2="-5.08" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="10.16" x2="5.08" y2="10.16" width="0.254" layer="94"/>
+<pin name="IN" x="-10.16" y="2.54" length="middle"/>
+<pin name="AGND" x="10.16" y="7.62" length="middle" rot="R180"/>
+<pin name="DGND" x="10.16" y="-2.54" length="middle" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="GND_CONNECT">
+<description>Use to make a connection of multiple grounds in only one place.</description>
+<gates>
+<gate name="G$1" symbol="GND_CONNECT" x="0" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="GND_CONNECT">
+<connects>
+<connect gate="G$1" pin="AGND" pad="2"/>
+<connect gate="G$1" pin="DGND" pad="1"/>
+<connect gate="G$1" pin="IN" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -44203,7 +44269,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="Q6" library="transistor-power" deviceset="IRF3704" device="S" value="IRFZ34NS"/>
 <part name="LOAD4" library="SparkFun" deviceset="M02" device="5MM"/>
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0603" value="0.01"/>
-<part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="Q5" library="transistor-power" deviceset="IRF3704" device="S" value="IRFZ34NS"/>
 <part name="LOAD3" library="SparkFun" deviceset="M02" device="5MM"/>
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="0.01"/>
@@ -44215,7 +44280,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="0.01"/>
 <part name="P+4" library="supply1" deviceset="+24V" device=""/>
 <part name="C6" library="rcl" deviceset="CPOL-EU" device="F" value="68uF"/>
-<part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="2k"/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="2k"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="2k"/>
@@ -44256,8 +44320,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="H4" library="holes" deviceset="MOUNT-HOLE" device="3.0" value=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
 <part name="C14" library="rcl" deviceset="CPOL-EU" device="F" value="68uF"/>
-<part name="GND20" library="supply1" deviceset="GND" device=""/>
-<part name="GND21" library="supply1" deviceset="GND" device=""/>
 <part name="LED1" library="led" deviceset="LED" device="CHIP-LED0603"/>
 <part name="LED2" library="led" deviceset="LED" device="CHIP-LED0603"/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
@@ -44267,6 +44329,14 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <part name="D2" library="diode" deviceset="DIODE-" device="SOD323-W" value="1N4148WS"/>
 <part name="D4" library="diode" deviceset="DIODE-" device="SOD323-W" value="1N4148WS"/>
 <part name="D5" library="diode" deviceset="DIODE-" device="SOD323-W" value="1N4148WS"/>
+<part name="GND7" library="supply1" deviceset="GNDA" device=""/>
+<part name="GND20" library="supply1" deviceset="GNDA" device=""/>
+<part name="GND21" library="supply1" deviceset="GNDA" device=""/>
+<part name="U$1" library="SparkFun-Passives" deviceset="GND_CONNECT" device=""/>
+<part name="GND24" library="supply1" deviceset="GNDA" device=""/>
+<part name="GND25" library="supply1" deviceset="GND" device=""/>
+<part name="GND26" library="supply1" deviceset="GND" device=""/>
+<part name="GND8" library="supply1" deviceset="GNDA" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -44281,16 +44351,17 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 we want to use PFET that has
 lower Vgs than input voltage</text>
 <text x="88.9" y="119.38" size="1.27" layer="97" rot="R180">&gt;= 4.7 uF, ESR 0.2 to 10 Ohm</text>
-<text x="332.74" y="200.66" size="1.27" layer="97" rot="R180">Diodes are optinoal.
+<text x="360.68" y="198.12" size="1.27" layer="97" rot="R180">Diodes are optinoal.
 LT1161 already handles inductive loads cleverly.</text>
 <wire x1="104.14" y1="5.08" x2="104.14" y2="106.68" width="0.1524" layer="97" style="longdash"/>
-<wire x1="104.14" y1="106.68" x2="104.14" y2="154.94" width="0.1524" layer="97" style="longdash"/>
-<wire x1="104.14" y1="154.94" x2="104.14" y2="256.54" width="0.1524" layer="97" style="longdash"/>
+<wire x1="104.14" y1="106.68" x2="104.14" y2="147.32" width="0.1524" layer="97" style="longdash"/>
+<wire x1="104.14" y1="147.32" x2="104.14" y2="256.54" width="0.1524" layer="97" style="longdash"/>
 <wire x1="5.08" y1="106.68" x2="104.14" y2="106.68" width="0.1524" layer="97" style="longdash"/>
-<wire x1="104.14" y1="154.94" x2="269.24" y2="154.94" width="0.1524" layer="97" style="longdash"/>
-<wire x1="269.24" y1="154.94" x2="383.54" y2="154.94" width="0.1524" layer="97" style="longdash"/>
-<wire x1="269.24" y1="154.94" x2="269.24" y2="5.08" width="0.1524" layer="97" style="longdash"/>
+<wire x1="104.14" y1="147.32" x2="269.24" y2="147.32" width="0.1524" layer="97" style="longdash"/>
+<wire x1="269.24" y1="147.32" x2="383.54" y2="147.32" width="0.1524" layer="97" style="longdash"/>
+<wire x1="269.24" y1="147.32" x2="269.24" y2="5.08" width="0.1524" layer="97" style="longdash"/>
 <text x="15.24" y="238.76" size="1.27" layer="97">Input 12 to 30V, maybe even more</text>
+<text x="162.56" y="215.9" size="1.27" layer="97" rot="R180">Power groundplane is separated from digital.</text>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
@@ -44309,9 +44380,9 @@ LT1161 already handles inductive loads cleverly.</text>
 <attribute name="NAME" x="34.29" y="67.5386" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="34.29" y="62.738" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="IC1" gate="G$1" x="154.94" y="83.82" smashed="yes">
-<attribute name="VALUE" x="120.65" y="55.88" size="1.778" layer="96"/>
-<attribute name="NAME" x="130.81" y="106.68" size="1.778" layer="95"/>
+<instance part="IC1" gate="G$1" x="154.94" y="73.66" smashed="yes">
+<attribute name="VALUE" x="120.65" y="45.72" size="1.778" layer="96"/>
+<attribute name="NAME" x="130.81" y="96.52" size="1.778" layer="95"/>
 </instance>
 <instance part="U2" gate="A" x="53.34" y="142.24" smashed="yes">
 <attribute name="NAME" x="40.6654" y="155.1686" size="2.0828" layer="95" ratio="10" rot="SR0"/>
@@ -44325,7 +44396,7 @@ LT1161 already handles inductive loads cleverly.</text>
 <instance part="GND2" gate="1" x="66.04" y="172.72"/>
 <instance part="C5" gate="G$1" x="71.12" y="185.42"/>
 <instance part="P+1" gate="1" x="71.12" y="200.66"/>
-<instance part="U3" gate="ANDRESV/LT1161" x="205.74" y="226.06"/>
+<instance part="U3" gate="ANDRESV/LT1161" x="233.68" y="223.52"/>
 <instance part="Q1" gate="G$1" x="55.88" y="238.76" smashed="yes" rot="MR90">
 <attribute name="NAME" x="58.42" y="246.38" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="55.88" y="233.68" size="1.778" layer="96" rot="MR0"/>
@@ -44341,158 +44412,172 @@ LT1161 already handles inductive loads cleverly.</text>
 <instance part="C4" gate="G$1" x="78.74" y="139.7"/>
 <instance part="GND6" gate="1" x="78.74" y="124.46"/>
 <instance part="+3V1" gate="G$1" x="78.74" y="160.02"/>
-<instance part="Q6" gate="G$1" x="264.16" y="218.44" smashed="yes" rot="R90">
-<attribute name="NAME" x="262.89" y="223.52" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="267.97" y="215.9" size="1.27" layer="96" rot="R180"/>
+<instance part="Q6" gate="G$1" x="292.1" y="215.9" smashed="yes" rot="R90">
+<attribute name="NAME" x="290.83" y="220.98" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="295.91" y="213.36" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="LOAD4" gate="G$1" x="284.48" y="241.3" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="289.56" y="243.84" size="1.778" layer="96" rot="MR270"/>
-<attribute name="NAME" x="277.622" y="236.22" size="1.27" layer="95" rot="MR90"/>
+<instance part="LOAD4" gate="G$1" x="312.42" y="238.76" smashed="yes" rot="MR270">
+<attribute name="VALUE" x="317.5" y="241.3" size="1.778" layer="96" rot="MR270"/>
+<attribute name="NAME" x="305.562" y="233.68" size="1.27" layer="95" rot="MR90"/>
 </instance>
-<instance part="R11" gate="G$1" x="248.92" y="220.98"/>
-<instance part="GND7" gate="1" x="292.1" y="162.56"/>
-<instance part="Q5" gate="G$1" x="264.16" y="208.28" smashed="yes" rot="R90">
-<attribute name="NAME" x="262.89" y="213.36" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="267.97" y="205.74" size="1.27" layer="96" rot="R180"/>
+<instance part="R11" gate="G$1" x="276.86" y="218.44"/>
+<instance part="Q5" gate="G$1" x="292.1" y="205.74" smashed="yes" rot="R90">
+<attribute name="NAME" x="290.83" y="210.82" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="295.91" y="203.2" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="LOAD3" gate="G$1" x="284.48" y="220.98" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="289.56" y="223.52" size="1.778" layer="96" rot="MR270"/>
-<attribute name="NAME" x="277.622" y="215.9" size="1.27" layer="95" rot="MR90"/>
+<instance part="LOAD3" gate="G$1" x="312.42" y="218.44" smashed="yes" rot="MR270">
+<attribute name="VALUE" x="317.5" y="220.98" size="1.778" layer="96" rot="MR270"/>
+<attribute name="NAME" x="305.562" y="213.36" size="1.27" layer="95" rot="MR90"/>
 </instance>
-<instance part="R10" gate="G$1" x="248.92" y="210.82"/>
-<instance part="Q4" gate="G$1" x="264.16" y="198.12" smashed="yes" rot="R90">
-<attribute name="NAME" x="262.89" y="203.2" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="267.97" y="195.58" size="1.27" layer="96" rot="R180"/>
+<instance part="R10" gate="G$1" x="276.86" y="208.28"/>
+<instance part="Q4" gate="G$1" x="292.1" y="195.58" smashed="yes" rot="R90">
+<attribute name="NAME" x="290.83" y="200.66" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="295.91" y="193.04" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="LOAD2" gate="G$1" x="284.48" y="200.66" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="289.56" y="203.2" size="1.778" layer="96" rot="MR270"/>
-<attribute name="NAME" x="277.622" y="195.58" size="1.27" layer="95" rot="MR90"/>
+<instance part="LOAD2" gate="G$1" x="312.42" y="198.12" smashed="yes" rot="MR270">
+<attribute name="VALUE" x="317.5" y="200.66" size="1.778" layer="96" rot="MR270"/>
+<attribute name="NAME" x="305.562" y="193.04" size="1.27" layer="95" rot="MR90"/>
 </instance>
-<instance part="R9" gate="G$1" x="248.92" y="200.66"/>
-<instance part="Q3" gate="G$1" x="264.16" y="187.96" smashed="yes" rot="R90">
-<attribute name="NAME" x="262.89" y="193.04" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="267.97" y="185.42" size="1.27" layer="96" rot="R180"/>
+<instance part="R9" gate="G$1" x="276.86" y="198.12"/>
+<instance part="Q3" gate="G$1" x="292.1" y="185.42" smashed="yes" rot="R90">
+<attribute name="NAME" x="290.83" y="190.5" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="295.91" y="182.88" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="LOAD1" gate="G$1" x="284.48" y="180.34" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="289.56" y="182.88" size="1.778" layer="96" rot="MR270"/>
-<attribute name="NAME" x="277.622" y="175.26" size="1.27" layer="95" rot="MR90"/>
+<instance part="LOAD1" gate="G$1" x="312.42" y="177.8" smashed="yes" rot="MR270">
+<attribute name="VALUE" x="317.5" y="180.34" size="1.778" layer="96" rot="MR270"/>
+<attribute name="NAME" x="305.562" y="172.72" size="1.27" layer="95" rot="MR90"/>
 </instance>
-<instance part="R8" gate="G$1" x="248.92" y="190.5"/>
-<instance part="P+4" gate="1" x="220.98" y="243.84"/>
-<instance part="C6" gate="G$1" x="210.82" y="233.68" smashed="yes" rot="R270">
-<attribute name="NAME" x="204.343" y="236.7026" size="1.778" layer="95"/>
-<attribute name="VALUE" x="204.343" y="229.0826" size="1.778" layer="96"/>
+<instance part="R8" gate="G$1" x="276.86" y="187.96"/>
+<instance part="P+4" gate="1" x="248.92" y="241.3"/>
+<instance part="C6" gate="G$1" x="238.76" y="231.14" smashed="yes" rot="R270">
+<attribute name="NAME" x="232.283" y="234.1626" size="1.778" layer="95"/>
+<attribute name="VALUE" x="232.283" y="226.5426" size="1.778" layer="96"/>
 </instance>
-<instance part="GND8" gate="1" x="198.12" y="175.26"/>
-<instance part="R5" gate="G$1" x="193.04" y="205.74" smashed="yes">
-<attribute name="NAME" x="189.23" y="202.438" size="1.778" layer="95"/>
-<attribute name="VALUE" x="194.31" y="202.438" size="1.778" layer="96"/>
+<instance part="R5" gate="G$1" x="220.98" y="203.2" smashed="yes">
+<attribute name="NAME" x="217.17" y="199.898" size="1.778" layer="95"/>
+<attribute name="VALUE" x="222.25" y="199.898" size="1.778" layer="96"/>
 </instance>
-<instance part="R4" gate="G$1" x="193.04" y="210.82" smashed="yes">
-<attribute name="NAME" x="189.23" y="207.518" size="1.778" layer="95"/>
-<attribute name="VALUE" x="194.31" y="207.518" size="1.778" layer="96"/>
+<instance part="R4" gate="G$1" x="220.98" y="208.28" smashed="yes">
+<attribute name="NAME" x="217.17" y="204.978" size="1.778" layer="95"/>
+<attribute name="VALUE" x="222.25" y="204.978" size="1.778" layer="96"/>
 </instance>
-<instance part="R3" gate="G$1" x="193.04" y="215.9" smashed="yes">
-<attribute name="NAME" x="189.23" y="212.598" size="1.778" layer="95"/>
-<attribute name="VALUE" x="194.31" y="212.598" size="1.778" layer="96"/>
+<instance part="R3" gate="G$1" x="220.98" y="213.36" smashed="yes">
+<attribute name="NAME" x="217.17" y="210.058" size="1.778" layer="95"/>
+<attribute name="VALUE" x="222.25" y="210.058" size="1.778" layer="96"/>
 </instance>
-<instance part="R2" gate="G$1" x="193.04" y="220.98" smashed="yes">
-<attribute name="NAME" x="189.23" y="217.678" size="1.778" layer="95"/>
-<attribute name="VALUE" x="194.31" y="217.678" size="1.778" layer="96"/>
+<instance part="R2" gate="G$1" x="220.98" y="218.44" smashed="yes">
+<attribute name="NAME" x="217.17" y="215.138" size="1.778" layer="95"/>
+<attribute name="VALUE" x="222.25" y="215.138" size="1.778" layer="96"/>
 </instance>
-<instance part="Q2" gate="G$1" x="152.4" y="132.08" smashed="yes" rot="R90">
-<attribute name="VALUE" x="148.59" y="129.54" size="1.778" layer="96" rot="R90"/>
+<instance part="Q2" gate="G$1" x="152.4" y="121.92" smashed="yes" rot="R90">
+<attribute name="VALUE" x="148.59" y="119.38" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C2" gate="G$1" x="154.94" y="137.16" rot="R90"/>
-<instance part="C3" gate="G$1" x="154.94" y="127" rot="R90"/>
-<instance part="GND23" gate="1" x="160.02" y="121.92"/>
-<instance part="C7" gate="G$1" x="134.62" y="129.54" smashed="yes" rot="R90">
-<attribute name="NAME" x="133.096" y="131.699" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="143.256" y="131.699" size="1.778" layer="96" rot="R180"/>
+<instance part="C2" gate="G$1" x="154.94" y="127" rot="R90"/>
+<instance part="C3" gate="G$1" x="154.94" y="116.84" rot="R90"/>
+<instance part="GND23" gate="1" x="160.02" y="111.76"/>
+<instance part="C7" gate="G$1" x="134.62" y="119.38" smashed="yes" rot="R90">
+<attribute name="NAME" x="133.096" y="121.539" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="143.256" y="121.539" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="C8" gate="G$1" x="134.62" y="124.46" smashed="yes" rot="R90">
-<attribute name="NAME" x="133.096" y="126.619" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="143.256" y="126.619" size="1.778" layer="96" rot="R180"/>
+<instance part="C8" gate="G$1" x="134.62" y="114.3" smashed="yes" rot="R90">
+<attribute name="NAME" x="133.096" y="116.459" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="143.256" y="116.459" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="+3V2" gate="G$1" x="144.78" y="142.24"/>
-<instance part="GND9" gate="1" x="127" y="104.14"/>
-<instance part="+3V3" gate="G$1" x="165.1" y="142.24" rot="MR0"/>
-<instance part="C9" gate="G$1" x="172.72" y="129.54" smashed="yes" rot="R90">
-<attribute name="NAME" x="171.196" y="131.699" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="181.356" y="131.699" size="1.778" layer="96" rot="R180"/>
+<instance part="+3V2" gate="G$1" x="144.78" y="132.08"/>
+<instance part="GND9" gate="1" x="127" y="93.98"/>
+<instance part="+3V3" gate="G$1" x="165.1" y="132.08" rot="MR0"/>
+<instance part="C9" gate="G$1" x="172.72" y="119.38" smashed="yes" rot="R90">
+<attribute name="NAME" x="171.196" y="121.539" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="181.356" y="121.539" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="C10" gate="G$1" x="172.72" y="124.46" smashed="yes" rot="R90">
-<attribute name="NAME" x="171.196" y="126.619" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="181.356" y="126.619" size="1.778" layer="96" rot="R180"/>
+<instance part="C10" gate="G$1" x="172.72" y="114.3" smashed="yes" rot="R90">
+<attribute name="NAME" x="171.196" y="116.459" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="181.356" y="116.459" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND12" gate="1" x="182.88" y="104.14"/>
-<instance part="+3V4" gate="G$1" x="182.88" y="60.96" rot="MR0"/>
-<instance part="C11" gate="G$1" x="182.88" y="38.1"/>
-<instance part="R12" gate="G$1" x="182.88" y="50.8" smashed="yes" rot="R90">
-<attribute name="NAME" x="184.15" y="52.2986" size="1.778" layer="95"/>
-<attribute name="VALUE" x="184.15" y="47.498" size="1.778" layer="96"/>
+<instance part="GND12" gate="1" x="182.88" y="93.98"/>
+<instance part="+3V4" gate="G$1" x="182.88" y="50.8" rot="MR0"/>
+<instance part="C11" gate="G$1" x="182.88" y="27.94"/>
+<instance part="R12" gate="G$1" x="182.88" y="40.64" smashed="yes" rot="R90">
+<attribute name="NAME" x="184.15" y="42.1386" size="1.778" layer="95"/>
+<attribute name="VALUE" x="184.15" y="37.338" size="1.778" layer="96"/>
 </instance>
-<instance part="GND13" gate="1" x="182.88" y="27.94"/>
-<instance part="C12" gate="G$1" x="193.04" y="96.52" smashed="yes" rot="R90">
-<attribute name="NAME" x="187.96" y="96.901" size="1.778" layer="95"/>
-<attribute name="VALUE" x="197.104" y="96.901" size="1.778" layer="96"/>
+<instance part="GND13" gate="1" x="182.88" y="17.78"/>
+<instance part="C12" gate="G$1" x="193.04" y="86.36" smashed="yes" rot="R90">
+<attribute name="NAME" x="187.96" y="86.741" size="1.778" layer="95"/>
+<attribute name="VALUE" x="197.104" y="86.741" size="1.778" layer="96"/>
 </instance>
-<instance part="GND14" gate="1" x="205.74" y="96.52" rot="R90"/>
-<instance part="JP1" gate="A" x="236.22" y="76.2" rot="MR0"/>
-<instance part="GND15" gate="1" x="246.38" y="63.5"/>
-<instance part="+3V5" gate="G$1" x="246.38" y="93.98" rot="MR0"/>
-<instance part="IC2" gate="G$1" x="317.5" y="106.68"/>
-<instance part="P+5" gate="1" x="320.04" y="139.7"/>
-<instance part="C13" gate="G$1" x="327.66" y="129.54" smashed="yes" rot="R270">
-<attribute name="NAME" x="332.74" y="131.699" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="331.216" y="126.619" size="1.778" layer="96" rot="R180"/>
+<instance part="GND14" gate="1" x="205.74" y="86.36" rot="R90"/>
+<instance part="JP1" gate="A" x="236.22" y="66.04" rot="MR0"/>
+<instance part="GND15" gate="1" x="246.38" y="53.34"/>
+<instance part="+3V5" gate="G$1" x="246.38" y="83.82" rot="MR0"/>
+<instance part="IC2" gate="G$1" x="325.12" y="99.06"/>
+<instance part="P+5" gate="1" x="327.66" y="132.08"/>
+<instance part="C13" gate="G$1" x="335.28" y="121.92" smashed="yes" rot="R270">
+<attribute name="NAME" x="340.36" y="124.079" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="338.836" y="118.999" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND16" gate="1" x="337.82" y="129.54" rot="R90"/>
-<instance part="+3V8" gate="G$1" x="289.56" y="111.76" rot="R90"/>
-<instance part="GND17" gate="1" x="327.66" y="58.42"/>
+<instance part="GND16" gate="1" x="345.44" y="121.92" rot="R90"/>
+<instance part="+3V8" gate="G$1" x="297.18" y="104.14" rot="R90"/>
+<instance part="GND17" gate="1" x="335.28" y="50.8"/>
 <instance part="POWER" gate="G$1" x="33.02" y="231.14" smashed="yes" rot="MR180">
 <attribute name="VALUE" x="30.48" y="236.22" size="1.778" layer="96" rot="MR180"/>
 <attribute name="NAME" x="30.48" y="235.458" size="1.27" layer="95" rot="MR180"/>
 </instance>
 <instance part="GND18" gate="1" x="43.18" y="218.44"/>
 <instance part="P+6" gate="1" x="30.48" y="198.12"/>
-<instance part="H1" gate="G$1" x="228.6" y="45.72"/>
-<instance part="H2" gate="G$1" x="236.22" y="45.72"/>
-<instance part="H3" gate="G$1" x="243.84" y="45.72"/>
-<instance part="H4" gate="G$1" x="251.46" y="45.72"/>
-<instance part="GND19" gate="1" x="251.46" y="35.56"/>
-<instance part="C14" gate="G$1" x="228.6" y="233.68" smashed="yes" rot="R90">
-<attribute name="NAME" x="235.077" y="238.2774" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="235.077" y="230.6574" size="1.778" layer="96" rot="R180"/>
+<instance part="H1" gate="G$1" x="228.6" y="35.56"/>
+<instance part="H2" gate="G$1" x="236.22" y="35.56"/>
+<instance part="H3" gate="G$1" x="243.84" y="35.56"/>
+<instance part="H4" gate="G$1" x="251.46" y="35.56"/>
+<instance part="GND19" gate="1" x="251.46" y="25.4"/>
+<instance part="C14" gate="G$1" x="256.54" y="231.14" smashed="yes" rot="R90">
+<attribute name="NAME" x="263.017" y="235.7374" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="263.017" y="228.1174" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND20" gate="1" x="238.76" y="233.68" rot="R90"/>
-<instance part="GND21" gate="1" x="200.66" y="233.68" rot="R270"/>
-<instance part="LED1" gate="G$1" x="248.92" y="124.46" rot="R90"/>
-<instance part="LED2" gate="G$1" x="248.92" y="114.3" rot="R90"/>
-<instance part="GND22" gate="1" x="256.54" y="106.68"/>
-<instance part="R14" gate="G$1" x="241.3" y="124.46" smashed="yes" rot="R180">
-<attribute name="NAME" x="242.57" y="128.0414" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="242.57" y="122.682" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="R15" gate="G$1" x="241.3" y="114.3" smashed="yes" rot="R180">
+<instance part="LED1" gate="G$1" x="248.92" y="114.3" rot="R90"/>
+<instance part="LED2" gate="G$1" x="248.92" y="104.14" rot="R90"/>
+<instance part="GND22" gate="1" x="256.54" y="96.52"/>
+<instance part="R14" gate="G$1" x="241.3" y="114.3" smashed="yes" rot="R180">
 <attribute name="NAME" x="242.57" y="117.8814" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="242.57" y="112.522" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="D3" gate="G$1" x="281.94" y="228.6" smashed="yes" rot="R180">
-<attribute name="NAME" x="287.02" y="228.1174" size="1.27" layer="95" rot="R180"/>
-<attribute name="VALUE" x="287.02" y="230.9114" size="1.27" layer="96" rot="R180"/>
+<instance part="R15" gate="G$1" x="241.3" y="104.14" smashed="yes" rot="R180">
+<attribute name="NAME" x="242.57" y="107.7214" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="242.57" y="102.362" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="D2" gate="G$1" x="281.94" y="208.28" smashed="yes" rot="R180">
-<attribute name="NAME" x="287.02" y="207.7974" size="1.27" layer="95" rot="R180"/>
-<attribute name="VALUE" x="287.02" y="210.5914" size="1.27" layer="96" rot="R180"/>
+<instance part="D3" gate="G$1" x="309.88" y="226.06" smashed="yes" rot="R180">
+<attribute name="NAME" x="314.96" y="225.5774" size="1.27" layer="95" rot="R180"/>
+<attribute name="VALUE" x="314.96" y="228.3714" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="D4" gate="G$1" x="281.94" y="187.96" smashed="yes" rot="R180">
-<attribute name="NAME" x="287.02" y="187.4774" size="1.27" layer="95" rot="R180"/>
-<attribute name="VALUE" x="287.02" y="190.2714" size="1.27" layer="96" rot="R180"/>
+<instance part="D2" gate="G$1" x="309.88" y="205.74" smashed="yes" rot="R180">
+<attribute name="NAME" x="314.96" y="205.2574" size="1.27" layer="95" rot="R180"/>
+<attribute name="VALUE" x="314.96" y="208.0514" size="1.27" layer="96" rot="R180"/>
 </instance>
-<instance part="D5" gate="G$1" x="281.94" y="167.64" smashed="yes" rot="R180">
-<attribute name="NAME" x="287.02" y="167.1574" size="1.27" layer="95" rot="R180"/>
-<attribute name="VALUE" x="287.02" y="169.9514" size="1.27" layer="96" rot="R180"/>
+<instance part="D4" gate="G$1" x="309.88" y="185.42" smashed="yes" rot="R180">
+<attribute name="NAME" x="314.96" y="184.9374" size="1.27" layer="95" rot="R180"/>
+<attribute name="VALUE" x="314.96" y="187.7314" size="1.27" layer="96" rot="R180"/>
+</instance>
+<instance part="D5" gate="G$1" x="309.88" y="165.1" smashed="yes" rot="R180">
+<attribute name="NAME" x="314.96" y="164.6174" size="1.27" layer="95" rot="R180"/>
+<attribute name="VALUE" x="314.96" y="167.4114" size="1.27" layer="96" rot="R180"/>
+</instance>
+<instance part="GND7" gate="1" x="320.04" y="160.02" smashed="yes">
+<attribute name="VALUE" x="317.5" y="157.48" size="1.778" layer="96"/>
+</instance>
+<instance part="GND20" gate="1" x="228.6" y="231.14" smashed="yes" rot="R270">
+<attribute name="VALUE" x="226.06" y="233.68" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND21" gate="1" x="266.7" y="231.14" smashed="yes" rot="R90">
+<attribute name="VALUE" x="269.24" y="228.6" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="U$1" gate="G$1" x="142.24" y="200.66"/>
+<instance part="GND24" gate="1" x="165.1" y="190.5" smashed="yes">
+<attribute name="VALUE" x="162.56" y="187.96" size="1.778" layer="96"/>
+</instance>
+<instance part="GND25" gate="1" x="127" y="190.5"/>
+<instance part="GND26" gate="1" x="154.94" y="190.5"/>
+<instance part="GND8" gate="1" x="226.06" y="172.72" smashed="yes">
+<attribute name="VALUE" x="223.52" y="170.18" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -44553,120 +44638,76 @@ LT1161 already handles inductive loads cleverly.</text>
 <wire x1="78.74" y1="127" x2="78.74" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="GND8" gate="1" pin="GND"/>
-<wire x1="198.12" y1="177.8" x2="198.12" y2="185.42" width="0.1524" layer="91"/>
-<pinref part="U3" gate="ANDRESV/LT1161" pin="GND1"/>
-<wire x1="198.12" y1="185.42" x2="198.12" y2="187.96" width="0.1524" layer="91"/>
-<wire x1="198.12" y1="187.96" x2="200.66" y2="187.96" width="0.1524" layer="91"/>
-<pinref part="U3" gate="ANDRESV/LT1161" pin="GND"/>
-<wire x1="200.66" y1="185.42" x2="198.12" y2="185.42" width="0.1524" layer="91"/>
-<junction x="198.12" y="185.42"/>
-</segment>
-<segment>
 <pinref part="C3" gate="G$1" pin="2"/>
-<wire x1="160.02" y1="127" x2="160.02" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="116.84" x2="160.02" y2="127" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="GND23" gate="1" pin="GND"/>
-<wire x1="160.02" y1="124.46" x2="160.02" y2="127" width="0.1524" layer="91"/>
-<junction x="160.02" y="127"/>
+<wire x1="160.02" y1="114.3" x2="160.02" y2="116.84" width="0.1524" layer="91"/>
+<junction x="160.02" y="116.84"/>
 </segment>
 <segment>
 <pinref part="GND9" gate="1" pin="GND"/>
-<wire x1="127" y1="106.68" x2="127" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="127" y1="96.52" x2="127" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="C7" gate="G$1" pin="1"/>
-<wire x1="127" y1="111.76" x2="127" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="127" y1="124.46" x2="127" y2="129.54" width="0.1524" layer="91"/>
-<wire x1="127" y1="129.54" x2="132.08" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="127" y1="101.6" x2="127" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="127" y1="114.3" x2="127" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="127" y1="119.38" x2="132.08" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="C8" gate="G$1" pin="1"/>
-<wire x1="132.08" y1="124.46" x2="127" y2="124.46" width="0.1524" layer="91"/>
-<junction x="127" y="124.46"/>
+<wire x1="132.08" y1="114.3" x2="127" y2="114.3" width="0.1524" layer="91"/>
+<junction x="127" y="114.3"/>
 <pinref part="IC1" gate="G$1" pin="41_TP"/>
-<wire x1="139.7" y1="109.22" x2="139.7" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="139.7" y1="111.76" x2="127" y2="111.76" width="0.1524" layer="91"/>
-<junction x="127" y="111.76"/>
+<wire x1="139.7" y1="99.06" x2="139.7" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="101.6" x2="127" y2="101.6" width="0.1524" layer="91"/>
+<junction x="127" y="101.6"/>
 <pinref part="IC1" gate="G$1" pin="39_AVSS"/>
-<wire x1="147.32" y1="109.22" x2="147.32" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="111.76" x2="139.7" y2="111.76" width="0.1524" layer="91"/>
-<junction x="139.7" y="111.76"/>
+<wire x1="147.32" y1="99.06" x2="147.32" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="101.6" x2="139.7" y2="101.6" width="0.1524" layer="91"/>
+<junction x="139.7" y="101.6"/>
 <pinref part="IC1" gate="G$1" pin="36_AVSS"/>
-<wire x1="154.94" y1="109.22" x2="154.94" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="154.94" y1="111.76" x2="147.32" y2="111.76" width="0.1524" layer="91"/>
-<junction x="147.32" y="111.76"/>
+<wire x1="154.94" y1="99.06" x2="154.94" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="101.6" x2="147.32" y2="101.6" width="0.1524" layer="91"/>
+<junction x="147.32" y="101.6"/>
 </segment>
 <segment>
 <pinref part="C10" gate="G$1" pin="2"/>
-<wire x1="177.8" y1="124.46" x2="182.88" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="177.8" y1="114.3" x2="182.88" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="GND12" gate="1" pin="GND"/>
-<wire x1="182.88" y1="124.46" x2="182.88" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="114.3" x2="182.88" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="C9" gate="G$1" pin="2"/>
-<wire x1="182.88" y1="111.76" x2="182.88" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="177.8" y1="129.54" x2="182.88" y2="129.54" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="129.54" x2="182.88" y2="124.46" width="0.1524" layer="91"/>
-<junction x="182.88" y="124.46"/>
+<wire x1="182.88" y1="101.6" x2="182.88" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="177.8" y1="119.38" x2="182.88" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="119.38" x2="182.88" y2="114.3" width="0.1524" layer="91"/>
+<junction x="182.88" y="114.3"/>
 <pinref part="IC1" gate="G$1" pin="31_DVSS"/>
-<wire x1="167.64" y1="109.22" x2="167.64" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="167.64" y1="111.76" x2="182.88" y2="111.76" width="0.1524" layer="91"/>
-<junction x="182.88" y="111.76"/>
+<wire x1="167.64" y1="99.06" x2="167.64" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="101.6" x2="182.88" y2="101.6" width="0.1524" layer="91"/>
+<junction x="182.88" y="101.6"/>
 </segment>
 <segment>
 <pinref part="GND13" gate="1" pin="GND"/>
 <pinref part="C11" gate="G$1" pin="2"/>
-<wire x1="182.88" y1="30.48" x2="182.88" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="20.32" x2="182.88" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C12" gate="G$1" pin="2"/>
 <pinref part="GND14" gate="1" pin="GND"/>
-<wire x1="198.12" y1="96.52" x2="203.2" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="86.36" x2="203.2" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="5"/>
-<wire x1="238.76" y1="73.66" x2="246.38" y2="73.66" width="0.1524" layer="91" style="longdash"/>
+<wire x1="238.76" y1="63.5" x2="246.38" y2="63.5" width="0.1524" layer="91" style="longdash"/>
 <pinref part="GND15" gate="1" pin="GND"/>
-<wire x1="246.38" y1="73.66" x2="246.38" y2="66.04" width="0.1524" layer="91" style="longdash"/>
+<wire x1="246.38" y1="63.5" x2="246.38" y2="55.88" width="0.1524" layer="91" style="longdash"/>
 </segment>
 <segment>
 <pinref part="C13" gate="G$1" pin="1"/>
-<wire x1="330.2" y1="129.54" x2="335.28" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="337.82" y1="121.92" x2="342.9" y2="121.92" width="0.1524" layer="91"/>
 <pinref part="GND16" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="GND17" gate="1" pin="GND"/>
 <pinref part="IC2" gate="G$1" pin="GND"/>
-<wire x1="327.66" y1="60.96" x2="327.66" y2="68.58" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="LOAD1" gate="G$1" pin="1"/>
-<wire x1="284.48" y1="172.72" x2="292.1" y2="172.72" width="0.1524" layer="91"/>
-<pinref part="GND7" gate="1" pin="GND"/>
-<wire x1="292.1" y1="172.72" x2="292.1" y2="167.64" width="0.1524" layer="91"/>
-<junction x="292.1" y="172.72"/>
-<pinref part="LOAD2" gate="G$1" pin="1"/>
-<wire x1="292.1" y1="167.64" x2="292.1" y2="165.1" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="233.68" x2="292.1" y2="228.6" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="228.6" x2="292.1" y2="213.36" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="213.36" x2="292.1" y2="208.28" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="208.28" x2="292.1" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="193.04" x2="292.1" y2="187.96" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="187.96" x2="292.1" y2="172.72" width="0.1524" layer="91"/>
-<wire x1="284.48" y1="193.04" x2="292.1" y2="193.04" width="0.1524" layer="91"/>
-<junction x="292.1" y="193.04"/>
-<pinref part="LOAD3" gate="G$1" pin="1"/>
-<wire x1="284.48" y1="213.36" x2="292.1" y2="213.36" width="0.1524" layer="91"/>
-<junction x="292.1" y="213.36"/>
-<pinref part="LOAD4" gate="G$1" pin="1"/>
-<wire x1="284.48" y1="233.68" x2="292.1" y2="233.68" width="0.1524" layer="91"/>
-<pinref part="D3" gate="G$1" pin="A"/>
-<wire x1="284.48" y1="228.6" x2="292.1" y2="228.6" width="0.1524" layer="91"/>
-<junction x="292.1" y="228.6"/>
-<pinref part="D2" gate="G$1" pin="A"/>
-<wire x1="284.48" y1="208.28" x2="292.1" y2="208.28" width="0.1524" layer="91"/>
-<junction x="292.1" y="208.28"/>
-<pinref part="D4" gate="G$1" pin="A"/>
-<wire x1="284.48" y1="187.96" x2="292.1" y2="187.96" width="0.1524" layer="91"/>
-<junction x="292.1" y="187.96"/>
-<pinref part="D5" gate="G$1" pin="A"/>
-<wire x1="284.48" y1="167.64" x2="292.1" y2="167.64" width="0.1524" layer="91"/>
-<junction x="292.1" y="167.64"/>
+<wire x1="335.28" y1="53.34" x2="335.28" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="POWER" gate="G$1" pin="2"/>
@@ -44675,38 +44716,40 @@ LT1161 already handles inductive loads cleverly.</text>
 <wire x1="43.18" y1="228.6" x2="43.18" y2="220.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="228.6" y1="45.72" x2="228.6" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="228.6" y1="40.64" x2="236.22" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="35.56" x2="228.6" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="30.48" x2="236.22" y2="30.48" width="0.1524" layer="91"/>
 <pinref part="GND19" gate="1" pin="GND"/>
-<wire x1="236.22" y1="40.64" x2="243.84" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="40.64" x2="251.46" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="251.46" y1="40.64" x2="251.46" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="251.46" y1="45.72" x2="251.46" y2="40.64" width="0.1524" layer="91"/>
-<junction x="251.46" y="40.64"/>
-<wire x1="243.84" y1="45.72" x2="243.84" y2="40.64" width="0.1524" layer="91"/>
-<junction x="243.84" y="40.64"/>
-<wire x1="236.22" y1="45.72" x2="236.22" y2="40.64" width="0.1524" layer="91"/>
-<junction x="236.22" y="40.64"/>
-</segment>
-<segment>
-<pinref part="GND21" gate="1" pin="GND"/>
-<pinref part="C6" gate="G$1" pin="-"/>
-<wire x1="203.2" y1="233.68" x2="205.74" y2="233.68" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="C14" gate="G$1" pin="-"/>
-<pinref part="GND20" gate="1" pin="GND"/>
-<wire x1="233.68" y1="233.68" x2="236.22" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="236.22" y1="30.48" x2="243.84" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="243.84" y1="30.48" x2="251.46" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="251.46" y1="30.48" x2="251.46" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="251.46" y1="35.56" x2="251.46" y2="30.48" width="0.1524" layer="91"/>
+<junction x="251.46" y="30.48"/>
+<wire x1="243.84" y1="35.56" x2="243.84" y2="30.48" width="0.1524" layer="91"/>
+<junction x="243.84" y="30.48"/>
+<wire x1="236.22" y1="35.56" x2="236.22" y2="30.48" width="0.1524" layer="91"/>
+<junction x="236.22" y="30.48"/>
 </segment>
 <segment>
 <pinref part="LED2" gate="G$1" pin="C"/>
-<wire x1="254" y1="114.3" x2="256.54" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="254" y1="104.14" x2="256.54" y2="104.14" width="0.1524" layer="91"/>
 <pinref part="GND22" gate="1" pin="GND"/>
-<wire x1="256.54" y1="114.3" x2="256.54" y2="109.22" width="0.1524" layer="91"/>
+<wire x1="256.54" y1="104.14" x2="256.54" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="LED1" gate="G$1" pin="C"/>
-<wire x1="254" y1="124.46" x2="256.54" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="124.46" x2="256.54" y2="114.3" width="0.1524" layer="91"/>
-<junction x="256.54" y="114.3"/>
+<wire x1="254" y1="114.3" x2="256.54" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="256.54" y1="114.3" x2="256.54" y2="104.14" width="0.1524" layer="91"/>
+<junction x="256.54" y="104.14"/>
+</segment>
+<segment>
+<pinref part="GND25" gate="1" pin="GND"/>
+<wire x1="127" y1="193.04" x2="127" y2="203.2" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="IN"/>
+<wire x1="127" y1="203.2" x2="132.08" y2="203.2" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="DGND"/>
+<wire x1="152.4" y1="198.12" x2="154.94" y2="198.12" width="0.1524" layer="91"/>
+<pinref part="GND26" gate="1" pin="GND"/>
+<wire x1="154.94" y1="198.12" x2="154.94" y2="193.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
@@ -44731,45 +44774,45 @@ LT1161 already handles inductive loads cleverly.</text>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="40_AVCC"/>
-<wire x1="144.78" y1="109.22" x2="144.78" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="99.06" x2="144.78" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="+3V2" gate="G$1" pin="+3V3"/>
 <pinref part="C8" gate="G$1" pin="2"/>
-<wire x1="144.78" y1="124.46" x2="144.78" y2="129.54" width="0.1524" layer="91"/>
-<wire x1="144.78" y1="129.54" x2="144.78" y2="139.7" width="0.1524" layer="91"/>
-<wire x1="139.7" y1="124.46" x2="144.78" y2="124.46" width="0.1524" layer="91"/>
-<junction x="144.78" y="124.46"/>
+<wire x1="144.78" y1="114.3" x2="144.78" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="119.38" x2="144.78" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="114.3" x2="144.78" y2="114.3" width="0.1524" layer="91"/>
+<junction x="144.78" y="114.3"/>
 <pinref part="C7" gate="G$1" pin="2"/>
-<wire x1="139.7" y1="129.54" x2="144.78" y2="129.54" width="0.1524" layer="91"/>
-<junction x="144.78" y="129.54"/>
+<wire x1="139.7" y1="119.38" x2="144.78" y2="119.38" width="0.1524" layer="91"/>
+<junction x="144.78" y="119.38"/>
 </segment>
 <segment>
 <pinref part="+3V3" gate="G$1" pin="+3V3"/>
 <pinref part="IC1" gate="G$1" pin="32_DVCC"/>
-<wire x1="165.1" y1="139.7" x2="165.1" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="129.54" x2="165.1" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="C10" gate="G$1" pin="1"/>
-<wire x1="165.1" y1="129.54" x2="165.1" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="124.46" x2="165.1" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="170.18" y1="124.46" x2="165.1" y2="124.46" width="0.1524" layer="91"/>
-<junction x="165.1" y="124.46"/>
+<wire x1="165.1" y1="119.38" x2="165.1" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="114.3" x2="165.1" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="170.18" y1="114.3" x2="165.1" y2="114.3" width="0.1524" layer="91"/>
+<junction x="165.1" y="114.3"/>
 <pinref part="C9" gate="G$1" pin="1"/>
-<wire x1="170.18" y1="129.54" x2="165.1" y2="129.54" width="0.1524" layer="91"/>
-<junction x="165.1" y="129.54"/>
+<wire x1="170.18" y1="119.38" x2="165.1" y2="119.38" width="0.1524" layer="91"/>
+<junction x="165.1" y="119.38"/>
 </segment>
 <segment>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
 <pinref part="R12" gate="G$1" pin="2"/>
-<wire x1="182.88" y1="58.42" x2="182.88" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="48.26" x2="182.88" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="2"/>
-<wire x1="238.76" y1="81.28" x2="246.38" y2="81.28" width="0.1524" layer="91" style="longdash"/>
+<wire x1="238.76" y1="71.12" x2="246.38" y2="71.12" width="0.1524" layer="91" style="longdash"/>
 <pinref part="+3V5" gate="G$1" pin="+3V3"/>
-<wire x1="246.38" y1="81.28" x2="246.38" y2="91.44" width="0.1524" layer="91" style="longdash"/>
+<wire x1="246.38" y1="71.12" x2="246.38" y2="81.28" width="0.1524" layer="91" style="longdash"/>
 </segment>
 <segment>
 <pinref part="+3V8" gate="G$1" pin="+3V3"/>
 <pinref part="IC2" gate="G$1" pin="RD"/>
-<wire x1="292.1" y1="111.76" x2="304.8" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="104.14" x2="312.42" y2="104.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="NTC2" class="0">
@@ -44784,8 +44827,8 @@ LT1161 already handles inductive loads cleverly.</text>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="10_P1.5"/>
-<wire x1="129.54" y1="71.12" x2="124.46" y2="71.12" width="0.1524" layer="91"/>
-<label x="124.46" y="71.12" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="60.96" x2="124.46" y2="60.96" width="0.1524" layer="91"/>
+<label x="124.46" y="60.96" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="NTC1" class="0">
@@ -44800,8 +44843,8 @@ LT1161 already handles inductive loads cleverly.</text>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="9_P1.4"/>
-<wire x1="129.54" y1="73.66" x2="124.46" y2="73.66" width="0.1524" layer="91"/>
-<label x="124.46" y="73.66" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="63.5" x2="124.46" y2="63.5" width="0.1524" layer="91"/>
+<label x="124.46" y="63.5" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -44826,11 +44869,11 @@ LT1161 already handles inductive loads cleverly.</text>
 <segment>
 <pinref part="IC2" gate="G$1" pin="5V"/>
 <pinref part="P+5" gate="1" pin="+5V"/>
-<wire x1="320.04" y1="124.46" x2="320.04" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="327.66" y1="116.84" x2="327.66" y2="121.92" width="0.1524" layer="91"/>
 <pinref part="C13" gate="G$1" pin="2"/>
-<wire x1="320.04" y1="129.54" x2="320.04" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="322.58" y1="129.54" x2="320.04" y2="129.54" width="0.1524" layer="91"/>
-<junction x="320.04" y="129.54"/>
+<wire x1="327.66" y1="121.92" x2="327.66" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="330.2" y1="121.92" x2="327.66" y2="121.92" width="0.1524" layer="91"/>
+<junction x="327.66" y="121.92"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -44863,195 +44906,195 @@ LT1161 already handles inductive loads cleverly.</text>
 <segment>
 <pinref part="C6" gate="G$1" pin="+"/>
 <pinref part="C14" gate="G$1" pin="+"/>
-<wire x1="213.36" y1="233.68" x2="218.44" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="241.3" y1="231.14" x2="246.38" y2="231.14" width="0.1524" layer="91"/>
 <pinref part="P+4" gate="1" pin="+24V"/>
-<wire x1="218.44" y1="233.68" x2="220.98" y2="233.68" width="0.1524" layer="91"/>
-<wire x1="220.98" y1="233.68" x2="223.52" y2="233.68" width="0.1524" layer="91"/>
-<wire x1="223.52" y1="233.68" x2="226.06" y2="233.68" width="0.1524" layer="91"/>
-<wire x1="220.98" y1="241.3" x2="220.98" y2="238.76" width="0.1524" layer="91"/>
-<junction x="220.98" y="233.68"/>
+<wire x1="246.38" y1="231.14" x2="248.92" y2="231.14" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="231.14" x2="251.46" y2="231.14" width="0.1524" layer="91"/>
+<wire x1="251.46" y1="231.14" x2="254" y2="231.14" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="238.76" x2="248.92" y2="236.22" width="0.1524" layer="91"/>
+<junction x="248.92" y="231.14"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="V2+"/>
-<wire x1="220.98" y1="238.76" x2="220.98" y2="233.68" width="0.1524" layer="91"/>
-<wire x1="218.44" y1="231.14" x2="218.44" y2="233.68" width="0.1524" layer="91"/>
-<junction x="218.44" y="233.68"/>
+<wire x1="248.92" y1="236.22" x2="248.92" y2="231.14" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="228.6" x2="246.38" y2="231.14" width="0.1524" layer="91"/>
+<junction x="246.38" y="231.14"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="V1+"/>
-<wire x1="223.52" y1="231.14" x2="223.52" y2="233.68" width="0.1524" layer="91"/>
-<junction x="223.52" y="233.68"/>
+<wire x1="251.46" y1="228.6" x2="251.46" y2="231.14" width="0.1524" layer="91"/>
+<junction x="251.46" y="231.14"/>
 <pinref part="R11" gate="G$1" pin="2"/>
 <pinref part="Q6" gate="G$1" pin="D"/>
-<wire x1="259.08" y1="220.98" x2="256.54" y2="220.98" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="220.98" x2="254" y2="220.98" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="238.76" x2="256.54" y2="220.98" width="0.1524" layer="91"/>
-<junction x="256.54" y="220.98"/>
+<wire x1="287.02" y1="218.44" x2="284.48" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="218.44" x2="281.94" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="236.22" x2="284.48" y2="218.44" width="0.1524" layer="91"/>
+<junction x="284.48" y="218.44"/>
 <pinref part="R10" gate="G$1" pin="2"/>
 <pinref part="Q5" gate="G$1" pin="D"/>
-<wire x1="259.08" y1="210.82" x2="256.54" y2="210.82" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="210.82" x2="254" y2="210.82" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="220.98" x2="256.54" y2="210.82" width="0.1524" layer="91"/>
-<junction x="256.54" y="210.82"/>
+<wire x1="287.02" y1="208.28" x2="284.48" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="208.28" x2="281.94" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="218.44" x2="284.48" y2="208.28" width="0.1524" layer="91"/>
+<junction x="284.48" y="208.28"/>
 <pinref part="R9" gate="G$1" pin="2"/>
 <pinref part="Q4" gate="G$1" pin="D"/>
-<wire x1="259.08" y1="200.66" x2="256.54" y2="200.66" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="200.66" x2="254" y2="200.66" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="210.82" x2="256.54" y2="200.66" width="0.1524" layer="91"/>
-<junction x="256.54" y="200.66"/>
+<wire x1="287.02" y1="198.12" x2="284.48" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="198.12" x2="281.94" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="208.28" x2="284.48" y2="198.12" width="0.1524" layer="91"/>
+<junction x="284.48" y="198.12"/>
 <pinref part="R8" gate="G$1" pin="2"/>
 <pinref part="Q3" gate="G$1" pin="D"/>
-<wire x1="259.08" y1="190.5" x2="256.54" y2="190.5" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="190.5" x2="254" y2="190.5" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="200.66" x2="256.54" y2="190.5" width="0.1524" layer="91"/>
-<junction x="256.54" y="190.5"/>
-<wire x1="220.98" y1="238.76" x2="256.54" y2="238.76" width="0.1524" layer="91"/>
-<junction x="220.98" y="238.76"/>
+<wire x1="287.02" y1="187.96" x2="284.48" y2="187.96" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="187.96" x2="281.94" y2="187.96" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="198.12" x2="284.48" y2="187.96" width="0.1524" layer="91"/>
+<junction x="284.48" y="187.96"/>
+<wire x1="248.92" y1="236.22" x2="284.48" y2="236.22" width="0.1524" layer="91"/>
+<junction x="248.92" y="236.22"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="Q6" gate="G$1" pin="S"/>
 <pinref part="LOAD4" gate="G$1" pin="2"/>
-<wire x1="281.94" y1="233.68" x2="274.32" y2="233.68" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="233.68" x2="274.32" y2="228.6" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="228.6" x2="274.32" y2="220.98" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="220.98" x2="269.24" y2="220.98" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="231.14" x2="302.26" y2="231.14" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="231.14" x2="302.26" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="226.06" x2="302.26" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="218.44" x2="297.18" y2="218.44" width="0.1524" layer="91"/>
 <pinref part="D3" gate="G$1" pin="C"/>
-<wire x1="279.4" y1="228.6" x2="274.32" y2="228.6" width="0.1524" layer="91"/>
-<junction x="274.32" y="228.6"/>
+<wire x1="307.34" y1="226.06" x2="302.26" y2="226.06" width="0.1524" layer="91"/>
+<junction x="302.26" y="226.06"/>
 </segment>
 </net>
 <net name="N$9" class="0">
 <segment>
 <pinref part="Q5" gate="G$1" pin="S"/>
-<wire x1="269.24" y1="210.82" x2="274.32" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="297.18" y1="208.28" x2="302.26" y2="208.28" width="0.1524" layer="91"/>
 <pinref part="LOAD3" gate="G$1" pin="2"/>
-<wire x1="281.94" y1="213.36" x2="274.32" y2="213.36" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="213.36" x2="274.32" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="210.82" x2="302.26" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="210.82" x2="302.26" y2="208.28" width="0.1524" layer="91"/>
 <pinref part="D2" gate="G$1" pin="C"/>
-<wire x1="279.4" y1="208.28" x2="274.32" y2="208.28" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="208.28" x2="274.32" y2="210.82" width="0.1524" layer="91"/>
-<junction x="274.32" y="210.82"/>
+<wire x1="307.34" y1="205.74" x2="302.26" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="205.74" x2="302.26" y2="208.28" width="0.1524" layer="91"/>
+<junction x="302.26" y="208.28"/>
 </segment>
 </net>
 <net name="N$12" class="0">
 <segment>
 <pinref part="Q4" gate="G$1" pin="S"/>
-<wire x1="269.24" y1="200.66" x2="274.32" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="297.18" y1="198.12" x2="302.26" y2="198.12" width="0.1524" layer="91"/>
 <pinref part="LOAD2" gate="G$1" pin="2"/>
-<wire x1="281.94" y1="193.04" x2="274.32" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="193.04" x2="274.32" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="190.5" x2="302.26" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="190.5" x2="302.26" y2="198.12" width="0.1524" layer="91"/>
 <pinref part="D4" gate="G$1" pin="C"/>
-<wire x1="279.4" y1="187.96" x2="274.32" y2="187.96" width="0.1524" layer="91"/>
-<wire x1="274.32" y1="187.96" x2="274.32" y2="193.04" width="0.1524" layer="91"/>
-<junction x="274.32" y="193.04"/>
+<wire x1="307.34" y1="185.42" x2="302.26" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="185.42" x2="302.26" y2="190.5" width="0.1524" layer="91"/>
+<junction x="302.26" y="190.5"/>
 </segment>
 </net>
 <net name="N$15" class="0">
 <segment>
 <pinref part="Q3" gate="G$1" pin="S"/>
-<wire x1="269.24" y1="190.5" x2="271.78" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="297.18" y1="187.96" x2="299.72" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="LOAD1" gate="G$1" pin="2"/>
-<wire x1="271.78" y1="190.5" x2="271.78" y2="172.72" width="0.1524" layer="91"/>
-<wire x1="271.78" y1="172.72" x2="281.94" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="187.96" x2="299.72" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="170.18" x2="309.88" y2="170.18" width="0.1524" layer="91"/>
 <pinref part="D5" gate="G$1" pin="C"/>
-<wire x1="279.4" y1="167.64" x2="271.78" y2="167.64" width="0.1524" layer="91"/>
-<wire x1="271.78" y1="167.64" x2="271.78" y2="172.72" width="0.1524" layer="91"/>
-<junction x="271.78" y="172.72"/>
+<wire x1="307.34" y1="165.1" x2="299.72" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="299.72" y1="165.1" x2="299.72" y2="170.18" width="0.1524" layer="91"/>
+<junction x="299.72" y="170.18"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
 <pinref part="R5" gate="G$1" pin="2"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="TIMER4"/>
-<wire x1="198.12" y1="205.74" x2="200.66" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="203.2" x2="228.6" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$8" class="0">
 <segment>
 <pinref part="R4" gate="G$1" pin="2"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="TIMER3"/>
-<wire x1="198.12" y1="210.82" x2="200.66" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="208.28" x2="228.6" y2="208.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$11" class="0">
 <segment>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="TIMER2"/>
-<wire x1="198.12" y1="215.9" x2="200.66" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="213.36" x2="228.6" y2="213.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$14" class="0">
 <segment>
 <pinref part="R2" gate="G$1" pin="2"/>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="TIMER1"/>
-<wire x1="198.12" y1="220.98" x2="200.66" y2="220.98" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="218.44" x2="228.6" y2="218.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="OUT4" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="INPUT4"/>
-<wire x1="200.66" y1="193.04" x2="187.96" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="190.5" x2="215.9" y2="190.5" width="0.1524" layer="91"/>
 <pinref part="R5" gate="G$1" pin="1"/>
-<wire x1="187.96" y1="193.04" x2="175.26" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="205.74" x2="187.96" y2="193.04" width="0.1524" layer="91"/>
-<junction x="187.96" y="193.04"/>
-<label x="175.26" y="193.04" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="215.9" y1="190.5" x2="203.2" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="215.9" y1="203.2" x2="215.9" y2="190.5" width="0.1524" layer="91"/>
+<junction x="215.9" y="190.5"/>
+<label x="203.2" y="190.5" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<wire x1="157.48" y1="116.84" x2="187.96" y2="116.84" width="0.1524" layer="91"/>
-<label x="187.96" y="116.84" size="1.27" layer="95" xref="yes"/>
+<wire x1="157.48" y1="106.68" x2="187.96" y2="106.68" width="0.1524" layer="91"/>
+<label x="187.96" y="106.68" size="1.27" layer="95" xref="yes"/>
 <pinref part="IC1" gate="G$1" pin="35_P2.4"/>
-<wire x1="157.48" y1="109.22" x2="157.48" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="99.06" x2="157.48" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="OUT3" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="INPUT3"/>
-<wire x1="200.66" y1="195.58" x2="185.42" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="193.04" x2="213.36" y2="193.04" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="185.42" y1="195.58" x2="175.26" y2="195.58" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="210.82" x2="185.42" y2="210.82" width="0.1524" layer="91"/>
-<wire x1="185.42" y1="210.82" x2="185.42" y2="195.58" width="0.1524" layer="91"/>
-<junction x="185.42" y="195.58"/>
-<label x="175.26" y="195.58" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="213.36" y1="193.04" x2="203.2" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="215.9" y1="208.28" x2="213.36" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="213.36" y1="208.28" x2="213.36" y2="193.04" width="0.1524" layer="91"/>
+<junction x="213.36" y="193.04"/>
+<label x="203.2" y="193.04" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<wire x1="160.02" y1="114.3" x2="187.96" y2="114.3" width="0.1524" layer="91"/>
-<label x="187.96" y="114.3" size="1.27" layer="95" xref="yes"/>
+<wire x1="160.02" y1="104.14" x2="187.96" y2="104.14" width="0.1524" layer="91"/>
+<label x="187.96" y="104.14" size="1.27" layer="95" xref="yes"/>
 <pinref part="IC1" gate="G$1" pin="34_P2.3"/>
-<wire x1="160.02" y1="109.22" x2="160.02" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="99.06" x2="160.02" y2="104.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="OUT2" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="INPUT2"/>
-<wire x1="200.66" y1="198.12" x2="182.88" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="195.58" x2="210.82" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="182.88" y1="198.12" x2="175.26" y2="198.12" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="215.9" x2="182.88" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="215.9" x2="182.88" y2="198.12" width="0.1524" layer="91"/>
-<junction x="182.88" y="198.12"/>
-<label x="175.26" y="198.12" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="210.82" y1="195.58" x2="203.2" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="215.9" y1="213.36" x2="210.82" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="210.82" y1="213.36" x2="210.82" y2="195.58" width="0.1524" layer="91"/>
+<junction x="210.82" y="195.58"/>
+<label x="203.2" y="195.58" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="29_P1.7"/>
-<wire x1="182.88" y1="91.44" x2="187.96" y2="91.44" width="0.1524" layer="91"/>
-<label x="187.96" y="91.44" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="81.28" x2="187.96" y2="81.28" width="0.1524" layer="91"/>
+<label x="187.96" y="81.28" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="OUT1" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="INPUT1"/>
-<wire x1="200.66" y1="200.66" x2="180.34" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="198.12" x2="208.28" y2="198.12" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="180.34" y1="200.66" x2="175.26" y2="200.66" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="220.98" x2="180.34" y2="220.98" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="220.98" x2="180.34" y2="200.66" width="0.1524" layer="91"/>
-<junction x="180.34" y="200.66"/>
-<label x="175.26" y="200.66" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="208.28" y1="198.12" x2="203.2" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="215.9" y1="218.44" x2="208.28" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="208.28" y1="218.44" x2="208.28" y2="198.12" width="0.1524" layer="91"/>
+<junction x="208.28" y="198.12"/>
+<label x="203.2" y="198.12" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="28_P1.6"/>
-<wire x1="182.88" y1="88.9" x2="187.96" y2="88.9" width="0.1524" layer="91"/>
-<label x="187.96" y="88.9" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="78.74" x2="187.96" y2="78.74" width="0.1524" layer="91"/>
+<label x="187.96" y="78.74" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="N$19" class="0">
@@ -45059,8 +45102,8 @@ LT1161 already handles inductive loads cleverly.</text>
 <pinref part="Q2" gate="G$1" pin="1"/>
 <pinref part="C3" gate="G$1" pin="1"/>
 <pinref part="IC1" gate="G$1" pin="37_PJ.4"/>
-<wire x1="152.4" y1="109.22" x2="152.4" y2="127" width="0.1524" layer="91"/>
-<junction x="152.4" y="127"/>
+<wire x1="152.4" y1="99.06" x2="152.4" y2="116.84" width="0.1524" layer="91"/>
+<junction x="152.4" y="116.84"/>
 </segment>
 </net>
 <net name="N$20" class="0">
@@ -45068,333 +45111,333 @@ LT1161 already handles inductive loads cleverly.</text>
 <pinref part="Q2" gate="G$1" pin="2"/>
 <pinref part="C2" gate="G$1" pin="1"/>
 <pinref part="IC1" gate="G$1" pin="38_PJ.5"/>
-<wire x1="149.86" y1="109.22" x2="149.86" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="149.86" y1="137.16" x2="152.4" y2="137.16" width="0.1524" layer="91"/>
-<junction x="152.4" y="137.16"/>
+<wire x1="149.86" y1="99.06" x2="149.86" y2="127" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="127" x2="152.4" y2="127" width="0.1524" layer="91"/>
+<junction x="152.4" y="127"/>
 </segment>
 </net>
 <net name="SBWTDIO" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="20__RST_SBWTDIO"/>
-<wire x1="167.64" y1="55.88" x2="167.64" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="45.72" x2="167.64" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="C11" gate="G$1" pin="1"/>
 <pinref part="R12" gate="G$1" pin="1"/>
-<wire x1="182.88" y1="40.64" x2="182.88" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="43.18" x2="182.88" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="167.64" y1="43.18" x2="182.88" y2="43.18" width="0.1524" layer="91"/>
-<junction x="182.88" y="43.18"/>
-<wire x1="182.88" y1="43.18" x2="190.5" y2="43.18" width="0.1524" layer="91"/>
-<label x="190.5" y="43.18" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="30.48" x2="182.88" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="33.02" x2="182.88" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="33.02" x2="182.88" y2="33.02" width="0.1524" layer="91"/>
+<junction x="182.88" y="33.02"/>
+<wire x1="182.88" y1="33.02" x2="190.5" y2="33.02" width="0.1524" layer="91"/>
+<label x="190.5" y="33.02" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="4"/>
-<wire x1="238.76" y1="76.2" x2="248.92" y2="76.2" width="0.1524" layer="91" style="longdash"/>
-<label x="248.92" y="76.2" size="1.27" layer="95" xref="yes"/>
+<wire x1="238.76" y1="66.04" x2="248.92" y2="66.04" width="0.1524" layer="91" style="longdash"/>
+<label x="248.92" y="66.04" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="SBWTCK" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="19_TEST_SBWTCK"/>
-<wire x1="165.1" y1="55.88" x2="165.1" y2="38.1" width="0.1524" layer="91"/>
-<label x="165.1" y="38.1" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="165.1" y1="45.72" x2="165.1" y2="27.94" width="0.1524" layer="91"/>
+<label x="165.1" y="27.94" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="3"/>
-<wire x1="238.76" y1="78.74" x2="248.92" y2="78.74" width="0.1524" layer="91" style="longdash"/>
-<label x="248.92" y="78.74" size="1.27" layer="95" xref="yes"/>
+<wire x1="238.76" y1="68.58" x2="248.92" y2="68.58" width="0.1524" layer="91" style="longdash"/>
+<label x="248.92" y="68.58" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="TX" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="21_P2.0"/>
-<wire x1="182.88" y1="71.12" x2="187.96" y2="71.12" width="0.1524" layer="91"/>
-<label x="187.96" y="71.12" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="60.96" x2="187.96" y2="60.96" width="0.1524" layer="91"/>
+<label x="187.96" y="60.96" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="1"/>
-<wire x1="238.76" y1="83.82" x2="248.92" y2="83.82" width="0.1524" layer="91" style="longdash"/>
-<label x="248.92" y="83.82" size="1.27" layer="95" xref="yes"/>
+<wire x1="238.76" y1="73.66" x2="248.92" y2="73.66" width="0.1524" layer="91" style="longdash"/>
+<label x="248.92" y="73.66" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="RX" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="22_P2.1"/>
-<wire x1="182.88" y1="73.66" x2="187.96" y2="73.66" width="0.1524" layer="91"/>
-<label x="187.96" y="73.66" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="63.5" x2="187.96" y2="63.5" width="0.1524" layer="91"/>
+<label x="187.96" y="63.5" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="JP1" gate="A" pin="6"/>
-<wire x1="238.76" y1="71.12" x2="248.92" y2="71.12" width="0.1524" layer="91" style="longdash"/>
-<label x="248.92" y="71.12" size="1.27" layer="95" xref="yes"/>
+<wire x1="238.76" y1="60.96" x2="248.92" y2="60.96" width="0.1524" layer="91" style="longdash"/>
+<label x="248.92" y="60.96" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="N$21" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="30_VCORE"/>
 <pinref part="C12" gate="G$1" pin="1"/>
-<wire x1="182.88" y1="93.98" x2="185.42" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="185.42" y1="93.98" x2="185.42" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="185.42" y1="96.52" x2="190.5" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="83.82" x2="185.42" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="83.82" x2="185.42" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="86.36" x2="190.5" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RS" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="RS"/>
-<wire x1="304.8" y1="116.84" x2="299.72" y2="116.84" width="0.1524" layer="91"/>
-<label x="299.72" y="116.84" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="109.22" x2="307.34" y2="109.22" width="0.1524" layer="91"/>
+<label x="307.34" y="109.22" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="14_PJ.3_TCK"/>
-<wire x1="152.4" y1="55.88" x2="152.4" y2="50.8" width="0.1524" layer="91"/>
-<label x="152.4" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="152.4" y1="45.72" x2="152.4" y2="40.64" width="0.1524" layer="91"/>
+<label x="152.4" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 <net name="WR" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="WR"/>
-<wire x1="304.8" y1="114.3" x2="299.72" y2="114.3" width="0.1524" layer="91"/>
-<label x="299.72" y="114.3" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="106.68" x2="307.34" y2="106.68" width="0.1524" layer="91"/>
+<label x="307.34" y="106.68" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="13_PJ.2_TMS"/>
-<wire x1="149.86" y1="55.88" x2="149.86" y2="50.8" width="0.1524" layer="91"/>
-<label x="149.86" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="149.86" y1="45.72" x2="149.86" y2="40.64" width="0.1524" layer="91"/>
+<label x="149.86" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 <net name="DB0" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB0"/>
-<wire x1="304.8" y1="106.68" x2="299.72" y2="106.68" width="0.1524" layer="91"/>
-<label x="299.72" y="106.68" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="99.06" x2="307.34" y2="99.06" width="0.1524" layer="91"/>
+<label x="307.34" y="99.06" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="12_PJ.1_TDI_TCLK"/>
-<wire x1="147.32" y1="55.88" x2="147.32" y2="50.8" width="0.1524" layer="91"/>
-<label x="147.32" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="147.32" y1="45.72" x2="147.32" y2="40.64" width="0.1524" layer="91"/>
+<label x="147.32" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 <net name="DB1" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB1"/>
-<wire x1="304.8" y1="104.14" x2="299.72" y2="104.14" width="0.1524" layer="91"/>
-<label x="299.72" y="104.14" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="96.52" x2="307.34" y2="96.52" width="0.1524" layer="91"/>
+<label x="307.34" y="96.52" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="11_PJ.0_TDO"/>
-<wire x1="144.78" y1="55.88" x2="144.78" y2="50.8" width="0.1524" layer="91"/>
-<label x="144.78" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="144.78" y1="45.72" x2="144.78" y2="40.64" width="0.1524" layer="91"/>
+<label x="144.78" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 <net name="DB2" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB2"/>
-<wire x1="304.8" y1="101.6" x2="299.72" y2="101.6" width="0.1524" layer="91"/>
-<label x="299.72" y="101.6" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="93.98" x2="307.34" y2="93.98" width="0.1524" layer="91"/>
+<label x="307.34" y="93.98" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="8_P1.3"/>
-<wire x1="129.54" y1="76.2" x2="124.46" y2="76.2" width="0.1524" layer="91"/>
-<label x="124.46" y="76.2" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="66.04" x2="124.46" y2="66.04" width="0.1524" layer="91"/>
+<label x="124.46" y="66.04" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DB3" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB3"/>
-<wire x1="304.8" y1="99.06" x2="299.72" y2="99.06" width="0.1524" layer="91"/>
-<label x="299.72" y="99.06" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="91.44" x2="307.34" y2="91.44" width="0.1524" layer="91"/>
+<label x="307.34" y="91.44" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="7_P3.3"/>
-<wire x1="129.54" y1="78.74" x2="124.46" y2="78.74" width="0.1524" layer="91"/>
-<label x="124.46" y="78.74" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="68.58" x2="124.46" y2="68.58" width="0.1524" layer="91"/>
+<label x="124.46" y="68.58" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DB4" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB4"/>
-<wire x1="304.8" y1="96.52" x2="299.72" y2="96.52" width="0.1524" layer="91"/>
-<label x="299.72" y="96.52" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="88.9" x2="307.34" y2="88.9" width="0.1524" layer="91"/>
+<label x="307.34" y="88.9" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="6_P3.2"/>
-<wire x1="129.54" y1="81.28" x2="124.46" y2="81.28" width="0.1524" layer="91" style="longdash"/>
-<label x="124.46" y="81.28" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="71.12" x2="124.46" y2="71.12" width="0.1524" layer="91" style="longdash"/>
+<label x="124.46" y="71.12" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DB5" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB5"/>
-<wire x1="304.8" y1="93.98" x2="299.72" y2="93.98" width="0.1524" layer="91"/>
-<label x="299.72" y="93.98" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="86.36" x2="307.34" y2="86.36" width="0.1524" layer="91"/>
+<label x="307.34" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="5_P3.1"/>
-<wire x1="129.54" y1="83.82" x2="124.46" y2="83.82" width="0.1524" layer="91" style="longdash"/>
-<label x="124.46" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="73.66" x2="124.46" y2="73.66" width="0.1524" layer="91" style="longdash"/>
+<label x="124.46" y="73.66" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DB6" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB6"/>
-<wire x1="304.8" y1="91.44" x2="299.72" y2="91.44" width="0.1524" layer="91"/>
-<label x="299.72" y="91.44" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="83.82" x2="307.34" y2="83.82" width="0.1524" layer="91"/>
+<label x="307.34" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="4_P3.0"/>
-<wire x1="129.54" y1="86.36" x2="124.46" y2="86.36" width="0.1524" layer="91"/>
-<label x="124.46" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="76.2" x2="124.46" y2="76.2" width="0.1524" layer="91"/>
+<label x="124.46" y="76.2" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DB7" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DB7"/>
-<wire x1="304.8" y1="88.9" x2="299.72" y2="88.9" width="0.1524" layer="91"/>
-<label x="299.72" y="88.9" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="81.28" x2="307.34" y2="81.28" width="0.1524" layer="91"/>
+<label x="307.34" y="81.28" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="3_P1.2"/>
-<wire x1="129.54" y1="88.9" x2="124.46" y2="88.9" width="0.1524" layer="91"/>
-<label x="124.46" y="88.9" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="78.74" x2="124.46" y2="78.74" width="0.1524" layer="91"/>
+<label x="124.46" y="78.74" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="CS" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="CS"/>
-<wire x1="304.8" y1="83.82" x2="299.72" y2="83.82" width="0.1524" layer="91"/>
-<label x="299.72" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="76.2" x2="307.34" y2="76.2" width="0.1524" layer="91"/>
+<label x="307.34" y="76.2" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="2_P1.1"/>
-<wire x1="129.54" y1="91.44" x2="124.46" y2="91.44" width="0.1524" layer="91"/>
-<label x="124.46" y="91.44" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="81.28" x2="124.46" y2="81.28" width="0.1524" layer="91"/>
+<label x="124.46" y="81.28" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="LCDRESET" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="RESET"/>
-<wire x1="304.8" y1="81.28" x2="299.72" y2="81.28" width="0.1524" layer="91"/>
-<label x="299.72" y="81.28" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="312.42" y1="73.66" x2="307.34" y2="73.66" width="0.1524" layer="91"/>
+<label x="307.34" y="73.66" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="1_P1.0"/>
-<wire x1="129.54" y1="93.98" x2="124.46" y2="93.98" width="0.1524" layer="91"/>
-<label x="124.46" y="93.98" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="129.54" y1="83.82" x2="124.46" y2="83.82" width="0.1524" layer="91"/>
+<label x="124.46" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DCLK" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DCLK"/>
-<wire x1="335.28" y1="116.84" x2="342.9" y2="116.84" width="0.1524" layer="91"/>
-<label x="342.9" y="116.84" size="1.27" layer="95" xref="yes"/>
+<wire x1="342.9" y1="109.22" x2="350.52" y2="109.22" width="0.1524" layer="91"/>
+<label x="350.52" y="109.22" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="27_P3.7"/>
-<wire x1="182.88" y1="86.36" x2="187.96" y2="86.36" width="0.1524" layer="91"/>
-<label x="187.96" y="86.36" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="76.2" x2="187.96" y2="76.2" width="0.1524" layer="91"/>
+<label x="187.96" y="76.2" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="DCS" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="CS1"/>
-<wire x1="335.28" y1="114.3" x2="342.9" y2="114.3" width="0.1524" layer="91"/>
-<label x="342.9" y="114.3" size="1.27" layer="95" xref="yes"/>
+<wire x1="342.9" y1="106.68" x2="350.52" y2="106.68" width="0.1524" layer="91"/>
+<label x="350.52" y="106.68" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="26_P3.6"/>
-<wire x1="182.88" y1="83.82" x2="187.96" y2="83.82" width="0.1524" layer="91"/>
-<label x="187.96" y="83.82" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="73.66" x2="187.96" y2="73.66" width="0.1524" layer="91"/>
+<label x="187.96" y="73.66" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="DIN" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DIN"/>
-<wire x1="335.28" y1="111.76" x2="342.9" y2="111.76" width="0.1524" layer="91"/>
-<label x="342.9" y="111.76" size="1.27" layer="95" xref="yes"/>
+<wire x1="342.9" y1="104.14" x2="350.52" y2="104.14" width="0.1524" layer="91"/>
+<label x="350.52" y="104.14" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="25_P3.5"/>
-<wire x1="182.88" y1="81.28" x2="187.96" y2="81.28" width="0.1524" layer="91"/>
-<label x="187.96" y="81.28" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="71.12" x2="187.96" y2="71.12" width="0.1524" layer="91"/>
+<label x="187.96" y="71.12" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="DOUT" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="DOUT"/>
-<wire x1="335.28" y1="106.68" x2="342.9" y2="106.68" width="0.1524" layer="91"/>
-<label x="342.9" y="106.68" size="1.27" layer="95" xref="yes"/>
+<wire x1="342.9" y1="99.06" x2="350.52" y2="99.06" width="0.1524" layer="91"/>
+<label x="350.52" y="99.06" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="24_P3.4"/>
-<wire x1="182.88" y1="78.74" x2="187.96" y2="78.74" width="0.1524" layer="91"/>
-<label x="187.96" y="78.74" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="68.58" x2="187.96" y2="68.58" width="0.1524" layer="91"/>
+<label x="187.96" y="68.58" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="DIRQ" class="0">
 <segment>
 <pinref part="IC2" gate="G$1" pin="PIRQ"/>
-<wire x1="335.28" y1="104.14" x2="342.9" y2="104.14" width="0.1524" layer="91"/>
-<label x="342.9" y="104.14" size="1.27" layer="95" xref="yes"/>
+<wire x1="342.9" y1="96.52" x2="350.52" y2="96.52" width="0.1524" layer="91"/>
+<label x="350.52" y="96.52" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="23_P2.2"/>
-<wire x1="182.88" y1="76.2" x2="187.96" y2="76.2" width="0.1524" layer="91"/>
-<label x="187.96" y="76.2" size="1.27" layer="95" xref="yes"/>
+<wire x1="182.88" y1="66.04" x2="187.96" y2="66.04" width="0.1524" layer="91"/>
+<label x="187.96" y="66.04" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="N$4" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="SENSE4"/>
 <pinref part="R8" gate="G$1" pin="1"/>
-<wire x1="241.3" y1="190.5" x2="243.84" y2="190.5" width="0.1524" layer="91" style="longdash"/>
+<wire x1="269.24" y1="187.96" x2="271.78" y2="187.96" width="0.1524" layer="91" style="longdash"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="SENSE3"/>
 <pinref part="R9" gate="G$1" pin="1"/>
-<wire x1="241.3" y1="200.66" x2="243.84" y2="200.66" width="0.1524" layer="91" style="longdash"/>
+<wire x1="269.24" y1="198.12" x2="271.78" y2="198.12" width="0.1524" layer="91" style="longdash"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="SENSE2"/>
 <pinref part="R10" gate="G$1" pin="1"/>
-<wire x1="241.3" y1="210.82" x2="243.84" y2="210.82" width="0.1524" layer="91" style="longdash"/>
+<wire x1="269.24" y1="208.28" x2="271.78" y2="208.28" width="0.1524" layer="91" style="longdash"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="SENSE1"/>
 <pinref part="R11" gate="G$1" pin="1"/>
-<wire x1="241.3" y1="220.98" x2="243.84" y2="220.98" width="0.1524" layer="91" style="longdash"/>
+<wire x1="269.24" y1="218.44" x2="271.78" y2="218.44" width="0.1524" layer="91" style="longdash"/>
 </segment>
 </net>
 <net name="N$18" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="GATE1"/>
 <pinref part="Q6" gate="G$1" pin="G"/>
-<wire x1="241.3" y1="215.9" x2="266.7" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="213.36" x2="294.64" y2="213.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$23" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="GATE2"/>
 <pinref part="Q5" gate="G$1" pin="G"/>
-<wire x1="241.3" y1="205.74" x2="266.7" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="203.2" x2="294.64" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$24" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="GATE3"/>
 <pinref part="Q4" gate="G$1" pin="G"/>
-<wire x1="241.3" y1="195.58" x2="266.7" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="193.04" x2="294.64" y2="193.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
 <pinref part="U3" gate="ANDRESV/LT1161" pin="GATE4"/>
 <pinref part="Q3" gate="G$1" pin="G"/>
-<wire x1="241.3" y1="185.42" x2="266.7" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="182.88" x2="294.64" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$13" class="0">
@@ -45421,25 +45464,87 @@ LT1161 already handles inductive loads cleverly.</text>
 <net name="LED2" class="0">
 <segment>
 <pinref part="R15" gate="G$1" pin="2"/>
-<wire x1="236.22" y1="114.3" x2="233.68" y2="114.3" width="0.1524" layer="91"/>
-<label x="233.68" y="114.3" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="236.22" y1="104.14" x2="233.68" y2="104.14" width="0.1524" layer="91"/>
+<label x="233.68" y="104.14" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="18_P2.6"/>
-<wire x1="162.56" y1="55.88" x2="162.56" y2="50.8" width="0.1524" layer="91"/>
-<label x="162.56" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="162.56" y1="45.72" x2="162.56" y2="40.64" width="0.1524" layer="91"/>
+<label x="162.56" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 <net name="LED1" class="0">
 <segment>
 <pinref part="R14" gate="G$1" pin="2"/>
-<wire x1="236.22" y1="124.46" x2="233.68" y2="124.46" width="0.1524" layer="91"/>
-<label x="233.68" y="124.46" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="236.22" y1="114.3" x2="233.68" y2="114.3" width="0.1524" layer="91"/>
+<label x="233.68" y="114.3" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="17_P2.5"/>
-<wire x1="160.02" y1="55.88" x2="160.02" y2="50.8" width="0.1524" layer="91"/>
-<label x="160.02" y="50.8" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="160.02" y1="45.72" x2="160.02" y2="40.64" width="0.1524" layer="91"/>
+<label x="160.02" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
+</segment>
+</net>
+<net name="GNDA" class="0">
+<segment>
+<pinref part="LOAD1" gate="G$1" pin="1"/>
+<wire x1="312.42" y1="170.18" x2="320.04" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="170.18" x2="320.04" y2="165.1" width="0.1524" layer="91"/>
+<junction x="320.04" y="170.18"/>
+<pinref part="LOAD2" gate="G$1" pin="1"/>
+<wire x1="320.04" y1="165.1" x2="320.04" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="231.14" x2="320.04" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="226.06" x2="320.04" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="210.82" x2="320.04" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="205.74" x2="320.04" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="190.5" x2="320.04" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="185.42" x2="320.04" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="190.5" x2="320.04" y2="190.5" width="0.1524" layer="91"/>
+<junction x="320.04" y="190.5"/>
+<pinref part="LOAD3" gate="G$1" pin="1"/>
+<wire x1="312.42" y1="210.82" x2="320.04" y2="210.82" width="0.1524" layer="91"/>
+<junction x="320.04" y="210.82"/>
+<pinref part="LOAD4" gate="G$1" pin="1"/>
+<wire x1="312.42" y1="231.14" x2="320.04" y2="231.14" width="0.1524" layer="91"/>
+<pinref part="D3" gate="G$1" pin="A"/>
+<wire x1="312.42" y1="226.06" x2="320.04" y2="226.06" width="0.1524" layer="91"/>
+<junction x="320.04" y="226.06"/>
+<pinref part="D2" gate="G$1" pin="A"/>
+<wire x1="312.42" y1="205.74" x2="320.04" y2="205.74" width="0.1524" layer="91"/>
+<junction x="320.04" y="205.74"/>
+<pinref part="D4" gate="G$1" pin="A"/>
+<wire x1="312.42" y1="185.42" x2="320.04" y2="185.42" width="0.1524" layer="91"/>
+<junction x="320.04" y="185.42"/>
+<pinref part="D5" gate="G$1" pin="A"/>
+<wire x1="312.42" y1="165.1" x2="320.04" y2="165.1" width="0.1524" layer="91"/>
+<junction x="320.04" y="165.1"/>
+<pinref part="GND7" gate="1" pin="GNDA"/>
+</segment>
+<segment>
+<pinref part="C6" gate="G$1" pin="-"/>
+<wire x1="231.14" y1="231.14" x2="233.68" y2="231.14" width="0.1524" layer="91"/>
+<pinref part="GND20" gate="1" pin="GNDA"/>
+</segment>
+<segment>
+<pinref part="C14" gate="G$1" pin="-"/>
+<wire x1="261.62" y1="231.14" x2="264.16" y2="231.14" width="0.1524" layer="91"/>
+<pinref part="GND21" gate="1" pin="GNDA"/>
+</segment>
+<segment>
+<wire x1="226.06" y1="175.26" x2="226.06" y2="182.88" width="0.1524" layer="91"/>
+<pinref part="U3" gate="ANDRESV/LT1161" pin="GND1"/>
+<wire x1="226.06" y1="182.88" x2="226.06" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="185.42" x2="228.6" y2="185.42" width="0.1524" layer="91"/>
+<pinref part="U3" gate="ANDRESV/LT1161" pin="GND"/>
+<wire x1="228.6" y1="182.88" x2="226.06" y2="182.88" width="0.1524" layer="91"/>
+<junction x="226.06" y="182.88"/>
+<pinref part="GND8" gate="1" pin="GNDA"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="AGND"/>
+<wire x1="152.4" y1="208.28" x2="165.1" y2="208.28" width="0.1524" layer="91"/>
+<pinref part="GND24" gate="1" pin="GNDA"/>
+<wire x1="165.1" y1="193.04" x2="165.1" y2="208.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
