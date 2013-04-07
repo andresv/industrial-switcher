@@ -32,17 +32,39 @@
  * Author: Andres Vahter (andres.vahter@gmail.com)
  */
  
-//#include <UTFT.h>
+#include <UTFT.h>
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
 
+#define RS_PIN 28
+#define WR_PIN 27
+#define CS_PIN 14
+#define RST_PIN 13
+
+// select font
+extern uint8_t SmallFont[];
+UTFT myGLCD(HX8340B_8, RS_PIN, WR_PIN, CS_PIN, RST_PIN);
+
 void setup() {                
   pinMode(G_GREEN_LED, OUTPUT);
   pinMode(G_RED_LED, OUTPUT);
+  myGLCD.InitLCD();
+  myGLCD.setFont(SmallFont);
 }
 
+bool fill = true;
 void loop() {
+  if (fill) {
+    // Clear the screen and draw the frame
+    myGLCD.clrScr();
+
+    myGLCD.setColor(255, 0, 0);
+    myGLCD.fillRect(0, 0, 219, 13);
+    //myGLCD.print("TFT", CENTER, 1);
+    fill = false;
+  }
+
   digitalWrite(G_GREEN_LED, HIGH);
   delay(250);
   digitalWrite(G_GREEN_LED, LOW);
