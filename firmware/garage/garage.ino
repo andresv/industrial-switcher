@@ -90,7 +90,7 @@ void draw_main_screen() {
     // garage
     TFT.setFont(SmallFont);
     TFT.setColor(VGA_WHITE);
-    TFT.print("garage", 65, 85);
+    TFT.print("garage", 65, 150);
     TFT.setFont(SevenSegNumFont);
     TFT.printNumI(10, 55, 100);
     TFT.setColor(VGA_RED);
