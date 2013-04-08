@@ -36,42 +36,132 @@
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
+#define OUTPUT_1 11
+#define OUTPUT_2 12
+
+#define BOX_WIDTH 30
+#define BOX_X_OFFSET 0
+#define BOX_Y_OFFSET 28
 
 #define RS_PIN 28
 #define WR_PIN 27
 #define CS_PIN 14
 #define RST_PIN 13
 
-// select font
 extern uint8_t SmallFont[];
-UTFT myGLCD(HX8340B_8, RS_PIN, WR_PIN, CS_PIN, RST_PIN);
+extern uint8_t SevenSegNumFont[];
+UTFT TFT(HX8340B_8, RS_PIN, WR_PIN, CS_PIN, RST_PIN);
+
+void draw_main_screen();
+void switch_out_1(bool onoff);
+void switch_out_2(bool onoff);
+void switch_out_3(bool onoff);
+void switch_out_4(bool onoff);
 
 void setup() {                
-  pinMode(G_GREEN_LED, OUTPUT);
-  pinMode(G_RED_LED, OUTPUT);
-  myGLCD.InitLCD();
-  myGLCD.setFont(SmallFont);
+    pinMode(G_GREEN_LED, OUTPUT);
+    pinMode(G_RED_LED, OUTPUT);
+    pinMode(OUTPUT_1, OUTPUT);
+    pinMode(OUTPUT_2, OUTPUT);
+
+    TFT.InitLCD();
+    draw_main_screen();
 }
 
-bool fill = true;
+void draw_main_screen() {
+    TFT.clrScr();
+
+    // draw output indicators
+    TFT.setColor(VGA_WHITE);
+    TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET, BOX_WIDTH, BOX_WIDTH + BOX_Y_OFFSET);
+    TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET+1*BOX_WIDTH, BOX_WIDTH, 2*BOX_WIDTH + BOX_Y_OFFSET);
+    TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET+2*BOX_WIDTH, BOX_WIDTH, 3*BOX_WIDTH + BOX_Y_OFFSET);
+    TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET+3*BOX_WIDTH, BOX_WIDTH, 4*BOX_WIDTH + BOX_Y_OFFSET);
+
+    
+    // color chamber
+    TFT.setFont(SmallFont);
+    TFT.print("painting", 55, 10);
+    TFT.setFont(SevenSegNumFont);
+    TFT.printNumI(25, 55, 26);
+    TFT.setColor(VGA_RED);
+    TFT.printNumI(60, 135, 26);
+
+    // garage
+    TFT.setFont(SmallFont);
+    TFT.setColor(VGA_WHITE);
+    TFT.print("garage", 65, 85);
+    TFT.setFont(SevenSegNumFont);
+    TFT.printNumI(10, 55, 100);
+    TFT.setColor(VGA_RED);
+    TFT.printNumI(25, 135, 100);
+
+    switch_out_1(HIGH);
+    //switch_out_2(HIGH);
+    switch_out_3(HIGH);
+    //switch_out_4(HIGH);
+}
+
+void switch_out_1(bool onoff) {
+    if (onoff) {
+        digitalWrite(OUTPUT_1, HIGH);
+        TFT.setColor(VGA_GREEN);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+    else {
+        digitalWrite(OUTPUT_1, LOW);
+        TFT.setColor(VGA_BLACK);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+}
+
+void switch_out_2(bool onoff) {
+    if (onoff) {
+        digitalWrite(OUTPUT_2, HIGH);
+        TFT.setColor(VGA_GREEN);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+    else {
+        digitalWrite(OUTPUT_2, LOW);
+        TFT.setColor(VGA_BLACK);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+}
+
+void switch_out_3(bool onoff) {
+    if (onoff) {
+        //digitalWrite(OUTPUT_2, HIGH);
+        TFT.setColor(VGA_GREEN);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+    else {
+        //digitalWrite(OUTPUT_2, LOW);
+        TFT.setColor(VGA_BLACK);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+}
+
+void switch_out_4(bool onoff) {
+    if (onoff) {
+        //digitalWrite(OUTPUT_2, HIGH);
+        TFT.setColor(VGA_GREEN);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+    else {
+        //digitalWrite(OUTPUT_2, LOW);
+        TFT.setColor(VGA_BLACK);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+}
+
 void loop() {
-  if (fill) {
-    // Clear the screen and draw the frame
-    myGLCD.clrScr();
-
-    myGLCD.setColor(255, 0, 0);
-    myGLCD.fillRect(0, 0, 219, 13);
-    //myGLCD.print("TFT", CENTER, 1);
-    fill = false;
-  }
-
-  digitalWrite(G_GREEN_LED, HIGH);
-  delay(250);
-  digitalWrite(G_GREEN_LED, LOW);
-  delay(250);
+    digitalWrite(G_GREEN_LED, HIGH);
+    delay(250);
+    digitalWrite(G_GREEN_LED, LOW);
+    delay(250);
   
-  digitalWrite(G_RED_LED, HIGH);
-  delay(250);
-  digitalWrite(G_RED_LED, LOW);
-  delay(250);
+    digitalWrite(G_RED_LED, HIGH);
+    delay(250);
+    digitalWrite(G_RED_LED, LOW);
+    delay(250);
 }
