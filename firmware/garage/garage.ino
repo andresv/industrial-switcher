@@ -33,6 +33,7 @@
  */
  
 #include <UTFT.h>
+#include <UTouch.h>
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
@@ -43,14 +44,24 @@
 #define BOX_X_OFFSET 0
 #define BOX_Y_OFFSET 28
 
+// TFT pins
 #define RS_PIN 28
 #define WR_PIN 27
 #define CS_PIN 14
 #define RST_PIN 13
 
+// Touch pins
+#define T_CLK_PIN 10
+#define T_TCS_PIN 9
+#define T_DIN_PIN 8
+#define T_OUT_PIN 7
+#define T_IRQ_PIN 6
+
 extern uint8_t SmallFont[];
 extern uint8_t SevenSegNumFont[];
+
 UTFT TFT(HX8340B_8, RS_PIN, WR_PIN, CS_PIN, RST_PIN);
+UTouch Touch(T_CLK_PIN, T_TCS_PIN, T_DIN_PIN, T_OUT_PIN, T_IRQ_PIN);
 
 void draw_main_screen();
 void switch_out_1(bool onoff);
@@ -65,6 +76,8 @@ void setup() {
     pinMode(OUTPUT_2, OUTPUT);
 
     TFT.InitLCD();
+    Touch.InitTouch(LANDSCAPE);
+    Touch.setPrecision(PREC_LOW);
     draw_main_screen();
 }
 
@@ -154,14 +167,37 @@ void switch_out_4(bool onoff) {
     }
 }
 
+uint8_t i = 0;
+uint32_t tx=0;
+uint32_t ty=0;
 void loop() {
-    digitalWrite(G_GREEN_LED, HIGH);
-    delay(250);
-    digitalWrite(G_GREEN_LED, LOW);
-    delay(250);
-  
-    digitalWrite(G_RED_LED, HIGH);
-    delay(250);
-    digitalWrite(G_RED_LED, LOW);
-    delay(250);
+    if (Touch.dataAvailable()) {
+        digitalWrite(G_GREEN_LED, HIGH);
+        delay(50);
+        digitalWrite(G_GREEN_LED, LOW);
+
+        Touch.read();
+        tx = Touch.getX();
+        ty = Touch.getY();
+
+        // sometimes x is reported as 219
+        // and y is reported as 0, actually they are not
+        // filter those touches out
+        if (tx != 219 && ty != 0) {
+            // check if lower right sector was touched
+            if (tx > 120 && ty > 90) {
+                TFT.setColor(VGA_WHITE);
+                TFT.setFont(SevenSegNumFont);
+                TFT.printNumI(i%99, 55, 100);
+                i++;
+            }
+            // check if upper right sector was touched
+            else if (tx > 120 && ty < 80) {
+                TFT.setColor(VGA_WHITE);
+                TFT.setFont(SevenSegNumFont);
+                TFT.printNumI(i%99, 55, 26);
+                i++;
+            }
+        }
+    }
 }
