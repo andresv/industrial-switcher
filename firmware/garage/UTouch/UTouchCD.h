@@ -16,7 +16,12 @@
 // These calibration settings works with my ITDB02-3.2S.
 // They MIGHT work on your display module, but you should run the
 // calibration sketch anyway.
-#define CAL_X 0x00378F66UL
-#define CAL_Y 0x03C34155UL
-#define CAL_S 0x000EF13FUL
+//#define CAL_X 0x00378F66UL
+//#define CAL_Y 0x03C34155UL
+//#define CAL_S 0x000EF13FUL
+
+// Calibration settings for 2.2"
+#define CAL_X 0x03A38166UL
+#define CAL_Y 0x03B801CDUL
+#define CAL_S 0x000AF0DBUL
 
