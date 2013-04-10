@@ -34,15 +34,30 @@
  
 #include <UTFT.h>
 #include <UTouch.h>
+#include "ntctable.h"
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
 #define OUTPUT_1 11
 #define OUTPUT_2 12
 
+#define NTC1_PIN A1 
+#define NTC2_PIN A0
+
+// graphics
 #define BOX_WIDTH 30
 #define BOX_X_OFFSET 0
 #define BOX_Y_OFFSET 28
+
+#define CUR_TEMP1_X 55
+#define CUR_TEMP1_Y 26
+#define SET_TEMP1_X 135
+#define SET_TEMP1_Y 26
+
+#define CUR_TEMP2_X 55
+#define CUR_TEMP2_Y 100
+#define SET_TEMP2_X 135
+#define SET_TEMP2_Y 100
 
 // TFT pins
 #define RS_PIN 28
@@ -57,13 +72,25 @@
 #define T_OUT_PIN 7
 #define T_IRQ_PIN 6
 
+#define CONTROL_OFF -127
+
 extern uint8_t SmallFont[];
 extern uint8_t SevenSegNumFont[];
 
 UTFT TFT(HX8340B_8, RS_PIN, WR_PIN, CS_PIN, RST_PIN);
 UTouch Touch(T_CLK_PIN, T_TCS_PIN, T_DIN_PIN, T_OUT_PIN, T_IRQ_PIN);
 
+int8_t current_temp_1;
+uint8_t temp_1_index = 0;
+int8_t temp_1_choices[] = {CONTROL_OFF, 25, 60};
+int8_t current_temp_2;
+uint8_t temp_2_index = 0;
+int8_t temp_2_choices[] = {CONTROL_OFF, 25};
+
 void draw_main_screen();
+void draw_set_temp_1();
+void draw_set_temp_2();
+void clear_number(int x1, int y1);
 void switch_out_1(bool onoff);
 void switch_out_2(bool onoff);
 void switch_out_3(bool onoff);
@@ -77,7 +104,7 @@ void setup() {
 
     TFT.InitLCD();
     Touch.InitTouch(LANDSCAPE);
-    Touch.setPrecision(PREC_LOW);
+    Touch.setPrecision(PREC_MEDIUM);
     draw_main_screen();
 }
 
@@ -96,23 +123,54 @@ void draw_main_screen() {
     TFT.setFont(SmallFont);
     TFT.print("painting", 55, 10);
     TFT.setFont(SevenSegNumFont);
-    TFT.printNumI(25, 55, 26);
-    TFT.setColor(VGA_RED);
-    TFT.printNumI(60, 135, 26);
+    TFT.printNumI(25, CUR_TEMP1_X, CUR_TEMP1_Y);
+    draw_set_temp_1();
 
     // garage
     TFT.setFont(SmallFont);
     TFT.setColor(VGA_WHITE);
     TFT.print("garage", 65, 150);
     TFT.setFont(SevenSegNumFont);
-    TFT.printNumI(10, 55, 100);
-    TFT.setColor(VGA_RED);
-    TFT.printNumI(25, 135, 100);
+    TFT.printNumI(10, CUR_TEMP2_X, CUR_TEMP2_Y);
+    draw_set_temp_2();
 
     switch_out_1(HIGH);
     //switch_out_2(HIGH);
     switch_out_3(HIGH);
     //switch_out_4(HIGH);
+}
+
+void draw_set_temp_1() {
+    if (temp_1_index >= sizeof(temp_1_choices)/sizeof(int8_t)) {
+        temp_1_index = 0;
+    }
+    if (temp_1_choices[temp_1_index] == CONTROL_OFF) {
+        clear_number(SET_TEMP1_X, SET_TEMP1_Y);
+    }
+    else {
+        TFT.setColor(VGA_RED);
+        TFT.setFont(SevenSegNumFont);
+        TFT.printNumI(temp_1_choices[temp_1_index], SET_TEMP1_X, SET_TEMP1_Y);
+    }
+}
+
+void draw_set_temp_2() {
+    if (temp_2_index >= sizeof(temp_2_choices)/sizeof(int8_t)) {
+        temp_2_index = 0;
+    }
+    if (temp_2_choices[temp_2_index] == CONTROL_OFF) {
+        clear_number(SET_TEMP2_X, SET_TEMP2_Y);
+    }
+    else {
+        TFT.setColor(VGA_RED);
+        TFT.setFont(SevenSegNumFont);
+        TFT.printNumI(temp_2_choices[temp_2_index], SET_TEMP2_X, SET_TEMP2_Y);
+    }
+}
+
+void clear_number(int x1, int y1) {
+    TFT.setColor(VGA_BLACK);
+    TFT.fillRect(x1, y1, x1 + 60, y1 + 60);
 }
 
 void switch_out_1(bool onoff) {
@@ -167,6 +225,63 @@ void switch_out_4(bool onoff) {
     }
 }
 
+int convert_raw_to_celsius(int rawtemp) {
+    int current_celsius = 0;
+    int i = 0;
+
+    for (i=1; i < NUMTEMPS; i++) {
+        if (temptable[i][0] > rawtemp) {
+            int realtemp = temptable[i-1][1] + (rawtemp - temptable[i-1][0]) * (temptable[i][1] - temptable[i-1][1]) / (temptable[i][0] - temptable[i-1][0]);
+            if (realtemp > 255) {
+                realtemp = 255;
+            }
+
+            current_celsius = realtemp;
+            break;
+        }
+    }
+
+    // Overflow: We just clamp to 0 degrees celsius
+    if (i == NUMTEMPS) {
+        current_celsius = 1000;
+    }
+
+    return current_celsius;
+}
+
+int read_temp_1() {
+    uint16_t rawtemp = analogRead(NTC1_PIN);
+    return convert_raw_to_celsius(rawtemp);
+}
+
+int read_temp_2() {
+    uint16_t rawtemp = analogRead(NTC2_PIN);
+    return convert_raw_to_celsius(rawtemp);
+}
+
+void read_temp_sensors() {
+    current_temp_1 = read_temp_1();
+    current_temp_2 = read_temp_2();
+
+    if (current_temp_1 > 99) {
+        current_temp_1 = 99;
+    }
+    else if (current_temp_1 < 0) {
+        current_temp_1 = 0;
+    }
+    if (current_temp_2 > 99) {
+        current_temp_2 = 99;
+    }
+    else if (current_temp_2 < 0) {
+        current_temp_2 = 0;
+    }
+
+    TFT.setFont(SevenSegNumFont);
+    TFT.setColor(VGA_WHITE);
+    TFT.printNumI(current_temp_1, CUR_TEMP1_X, CUR_TEMP1_Y);
+    TFT.printNumI(current_temp_2, CUR_TEMP2_X, CUR_TEMP2_Y);
+}
+
 uint8_t i = 0;
 uint32_t tx=0;
 uint32_t ty=0;
@@ -185,19 +300,17 @@ void loop() {
         // filter those touches out
         if (tx != 219 && ty != 0) {
             // check if lower right sector was touched
-            if (tx > 120 && ty > 90) {
-                TFT.setColor(VGA_WHITE);
-                TFT.setFont(SevenSegNumFont);
-                TFT.printNumI(i%99, 55, 100);
-                i++;
+            if (ty > 90) {
+                temp_2_index++;
+                draw_set_temp_2();
             }
             // check if upper right sector was touched
-            else if (tx > 120 && ty < 80) {
-                TFT.setColor(VGA_WHITE);
-                TFT.setFont(SevenSegNumFont);
-                TFT.printNumI(i%99, 55, 26);
-                i++;
+            else if (ty < 80) {
+                temp_1_index++;
+                draw_set_temp_1();
             }
         }
     }
+
+    read_temp_sensors();
 }
