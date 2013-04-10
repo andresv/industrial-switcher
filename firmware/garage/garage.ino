@@ -38,8 +38,10 @@
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
-#define OUTPUT_1 11
-#define OUTPUT_2 12
+// silk screen is wrong on v1.0 board, reverse order here
+// 2.3 and 2.4 are not mapped in Energia, they are handled as raw GPIO
+#define OUTPUT_3 12
+#define OUTPUT_4 11
 
 #define NTC1_PIN A1 
 #define NTC2_PIN A0
@@ -72,6 +74,8 @@
 #define T_OUT_PIN 7
 #define T_IRQ_PIN 6
 
+#define UPPER_HYSTERESIS 5
+#define LOWER_HYSTERESIS 5
 #define CONTROL_OFF -127
 
 extern uint8_t SmallFont[];
@@ -87,6 +91,9 @@ int8_t current_temp_2;
 uint8_t temp_2_index = 0;
 int8_t temp_2_choices[] = {CONTROL_OFF, 25};
 
+bool hysteresis_1_raising = true;
+bool hysteresis_2_raising = false;
+
 void draw_main_screen();
 void draw_set_temp_1();
 void draw_set_temp_2();
@@ -99,8 +106,10 @@ void switch_out_4(bool onoff);
 void setup() {                
     pinMode(G_GREEN_LED, OUTPUT);
     pinMode(G_RED_LED, OUTPUT);
-    pinMode(OUTPUT_1, OUTPUT);
-    pinMode(OUTPUT_2, OUTPUT);
+    pinMode(OUTPUT_3, OUTPUT);
+    pinMode(OUTPUT_4, OUTPUT);
+    pinMode(NTC1_PIN, INPUT);
+    pinMode(NTC2_PIN, INPUT);
 
     TFT.InitLCD();
     Touch.InitTouch(LANDSCAPE);
@@ -133,11 +142,6 @@ void draw_main_screen() {
     TFT.setFont(SevenSegNumFont);
     TFT.printNumI(10, CUR_TEMP2_X, CUR_TEMP2_Y);
     draw_set_temp_2();
-
-    switch_out_1(HIGH);
-    //switch_out_2(HIGH);
-    switch_out_3(HIGH);
-    //switch_out_4(HIGH);
 }
 
 void draw_set_temp_1() {
@@ -173,53 +177,55 @@ void clear_number(int x1, int y1) {
     TFT.fillRect(x1, y1, x1 + 60, y1 + 60);
 }
 
-void switch_out_1(bool onoff) {
+void switch_out_4(bool onoff) {
     if (onoff) {
-        digitalWrite(OUTPUT_1, HIGH);
+        digitalWrite(OUTPUT_4, HIGH);
         TFT.setColor(VGA_GREEN);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
-        digitalWrite(OUTPUT_1, LOW);
+        digitalWrite(OUTPUT_4, LOW);
         TFT.setColor(VGA_BLACK);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
-    }
-}
-
-void switch_out_2(bool onoff) {
-    if (onoff) {
-        digitalWrite(OUTPUT_2, HIGH);
-        TFT.setColor(VGA_GREEN);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
-    }
-    else {
-        digitalWrite(OUTPUT_2, LOW);
-        TFT.setColor(VGA_BLACK);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
 }
 
 void switch_out_3(bool onoff) {
     if (onoff) {
-        //digitalWrite(OUTPUT_2, HIGH);
+        digitalWrite(OUTPUT_3, HIGH);
+        TFT.setColor(VGA_GREEN);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+    else {
+        digitalWrite(OUTPUT_3, LOW);
+        TFT.setColor(VGA_BLACK);
+        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
+    }
+}
+
+void switch_out_2(bool onoff) {
+    P2DIR |= (1<<3);
+    if (onoff) {
+        P2OUT |= (1<<3);
         TFT.setColor(VGA_GREEN);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
-        //digitalWrite(OUTPUT_2, LOW);
+        P2OUT &= ~(1<<3);
         TFT.setColor(VGA_BLACK);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
 }
 
-void switch_out_4(bool onoff) {
+void switch_out_1(bool onoff) {
+    P2DIR |= (1<<4);
     if (onoff) {
-        //digitalWrite(OUTPUT_2, HIGH);
+        P2OUT |= (1<<4);
         TFT.setColor(VGA_GREEN);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
-        //digitalWrite(OUTPUT_2, LOW);
+        P2OUT &= ~(1<<4);
         TFT.setColor(VGA_BLACK);
         TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
@@ -282,13 +288,12 @@ void read_temp_sensors() {
     TFT.printNumI(current_temp_2, CUR_TEMP2_X, CUR_TEMP2_Y);
 }
 
-uint8_t i = 0;
 uint32_t tx=0;
 uint32_t ty=0;
 void loop() {
     if (Touch.dataAvailable()) {
         digitalWrite(G_GREEN_LED, HIGH);
-        delay(50);
+        delay(100);
         digitalWrite(G_GREEN_LED, LOW);
 
         Touch.read();
@@ -313,4 +318,44 @@ void loop() {
     }
 
     read_temp_sensors();
+
+    //---------------------------------------------------------------
+    // 1 ON-OFF regulator
+    //---------------------------------------------------------------
+    // upper point
+    if (hysteresis_1_raising && (current_temp_1 >= (temp_1_choices[temp_1_index] + UPPER_HYSTERESIS))) {
+        hysteresis_1_raising = false;
+    }
+    // lower point
+    else if (!hysteresis_1_raising && (current_temp_1 <= (temp_1_choices[temp_1_index] - LOWER_HYSTERESIS))) {
+        hysteresis_1_raising = true;
+    }
+    // raising
+    if (hysteresis_1_raising) {
+        switch_out_4(HIGH);
+    }
+    // falling
+    else {
+        switch_out_4(LOW);
+    }
+
+    //---------------------------------------------------------------
+    // 2 ON-OFF regulator
+    //---------------------------------------------------------------
+    // upper point
+    if (hysteresis_2_raising && (current_temp_2 >= (temp_2_choices[temp_2_index] + UPPER_HYSTERESIS))) {
+        hysteresis_2_raising = false;
+    }
+    // lower point
+    else if (!hysteresis_2_raising && (current_temp_2 <= (temp_2_choices[temp_2_index] - LOWER_HYSTERESIS))) {
+        hysteresis_2_raising = true;
+    }
+    // raising
+    if (hysteresis_2_raising) {
+        switch_out_1(HIGH);
+    }
+    // falling
+    else {
+        switch_out_1(LOW);
+    }
 }
