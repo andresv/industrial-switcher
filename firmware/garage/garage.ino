@@ -77,6 +77,8 @@
 #define UPPER_HYSTERESIS 5
 #define LOWER_HYSTERESIS 5
 #define CONTROL_OFF -127
+#define HIGH_TEMP 60
+#define HIGH_TEMP_TIME 60*60 // seconds
 
 extern uint8_t SmallFont[];
 extern uint8_t SevenSegNumFont[];
@@ -86,11 +88,13 @@ UTouch Touch(T_CLK_PIN, T_TCS_PIN, T_DIN_PIN, T_OUT_PIN, T_IRQ_PIN);
 
 int8_t current_temp_1;
 uint8_t temp_1_index = 0;
-int8_t temp_1_choices[] = {CONTROL_OFF, 25, 60};
+int8_t temp_1_choices[] = {CONTROL_OFF, HIGH_TEMP, 25};
 int8_t current_temp_2;
 uint8_t temp_2_index = 0;
 int8_t temp_2_choices[] = {CONTROL_OFF, 25};
 
+uint32_t heater_start_timestamp = 0;
+uint32_t seconds_count = 0;
 bool hysteresis_1_raising = true;
 bool hysteresis_2_raising = false;
 
@@ -106,6 +110,8 @@ void switch_out_4(bool onoff);
 void setup() {                
     pinMode(G_GREEN_LED, OUTPUT);
     pinMode(G_RED_LED, OUTPUT);
+    P2DIR |= (1<<4); // OUTPUT_1
+    P2DIR |= (1<<3); // OUTPUT_2
     pinMode(OUTPUT_3, OUTPUT);
     pinMode(OUTPUT_4, OUTPUT);
     pinMode(NTC1_PIN, INPUT);
@@ -152,6 +158,17 @@ void draw_set_temp_1() {
         clear_number(SET_TEMP1_X, SET_TEMP1_Y);
     }
     else {
+        // HIGH_TEMP degrees should be active only for 1 h
+        if (temp_1_choices[temp_1_index] == HIGH_TEMP) {
+            heater_start_timestamp = millis();
+        }
+        else {
+            heater_start_timestamp = 0;
+            TFT.setColor(VGA_WHITE);
+            TFT.setFont(SmallFont);
+            TFT.print("      ", 149, 10);
+        }
+
         TFT.setColor(VGA_RED);
         TFT.setFont(SevenSegNumFont);
         TFT.printNumI(temp_1_choices[temp_1_index], SET_TEMP1_X, SET_TEMP1_Y);
@@ -204,7 +221,6 @@ void switch_out_3(bool onoff) {
 }
 
 void switch_out_2(bool onoff) {
-    P2DIR |= (1<<3);
     if (onoff) {
         P2OUT |= (1<<3);
         TFT.setColor(VGA_GREEN);
@@ -218,7 +234,6 @@ void switch_out_2(bool onoff) {
 }
 
 void switch_out_1(bool onoff) {
-    P2DIR |= (1<<4);
     if (onoff) {
         P2OUT |= (1<<4);
         TFT.setColor(VGA_GREEN);
@@ -318,6 +333,27 @@ void loop() {
     }
 
     read_temp_sensors();
+
+    // HIGH_TEMP degrees should be active only for 1 h
+    if (heater_start_timestamp > 0) {
+        seconds_count = (millis() - heater_start_timestamp) / 1000;
+
+        if (seconds_count < HIGH_TEMP_TIME) {
+            TFT.setColor(VGA_WHITE);
+            TFT.setFont(SmallFont);
+            TFT.printNumI((HIGH_TEMP_TIME - seconds_count) / 60, 149, 12, 2, '0');
+            TFT.print(":", 164, 11);
+            TFT.printNumI((HIGH_TEMP_TIME - seconds_count) % 60, 172, 12, 2, '0');
+        }
+        else {
+            TFT.setColor(VGA_WHITE);
+            TFT.setFont(SmallFont);
+            TFT.print("      ", 149, 10);
+            heater_start_timestamp = 0;
+            temp_1_index++;
+            draw_set_temp_1();
+        }
+    }
 
     //---------------------------------------------------------------
     // 1 ON-OFF regulator
