@@ -74,6 +74,7 @@
 #define T_OUT_PIN 7
 #define T_IRQ_PIN 6
 
+// ON/OFF regulator
 #define UPPER_HYSTERESIS 5
 #define LOWER_HYSTERESIS 5
 #define CONTROL_OFF -127
@@ -133,20 +134,15 @@ void draw_main_screen() {
     TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET+2*BOX_WIDTH, BOX_WIDTH, 3*BOX_WIDTH + BOX_Y_OFFSET);
     TFT.drawRect(BOX_X_OFFSET, BOX_Y_OFFSET+3*BOX_WIDTH, BOX_WIDTH, 4*BOX_WIDTH + BOX_Y_OFFSET);
 
-    
     // color chamber
     TFT.setFont(SmallFont);
     TFT.print("painting", 55, 10);
-    TFT.setFont(SevenSegNumFont);
-    TFT.printNumI(25, CUR_TEMP1_X, CUR_TEMP1_Y);
     draw_set_temp_1();
 
     // garage
     TFT.setFont(SmallFont);
     TFT.setColor(VGA_WHITE);
     TFT.print("garage", 65, 150);
-    TFT.setFont(SevenSegNumFont);
-    TFT.printNumI(10, CUR_TEMP2_X, CUR_TEMP2_Y);
     draw_set_temp_2();
 }
 
@@ -171,7 +167,7 @@ void draw_set_temp_1() {
 
         TFT.setColor(VGA_RED);
         TFT.setFont(SevenSegNumFont);
-        TFT.printNumI(temp_1_choices[temp_1_index], SET_TEMP1_X, SET_TEMP1_Y);
+        TFT.printNumI(temp_1_choices[temp_1_index], SET_TEMP1_X, SET_TEMP1_Y, 2, '0');
     }
 }
 
@@ -185,7 +181,7 @@ void draw_set_temp_2() {
     else {
         TFT.setColor(VGA_RED);
         TFT.setFont(SevenSegNumFont);
-        TFT.printNumI(temp_2_choices[temp_2_index], SET_TEMP2_X, SET_TEMP2_Y);
+        TFT.printNumI(temp_2_choices[temp_2_index], SET_TEMP2_X, SET_TEMP2_Y, 2, '0');
     }
 }
 
@@ -299,17 +295,26 @@ void read_temp_sensors() {
 
     TFT.setFont(SevenSegNumFont);
     TFT.setColor(VGA_WHITE);
-    TFT.printNumI(current_temp_1, CUR_TEMP1_X, CUR_TEMP1_Y);
-    TFT.printNumI(current_temp_2, CUR_TEMP2_X, CUR_TEMP2_Y);
+    TFT.printNumI(current_temp_1, CUR_TEMP1_X, CUR_TEMP1_Y, 2, '0');
+    TFT.printNumI(current_temp_2, CUR_TEMP2_X, CUR_TEMP2_Y, 2, '0');
 }
 
 uint32_t tx=0;
 uint32_t ty=0;
+bool led_on = true;
 void loop() {
-    if (Touch.dataAvailable()) {
+    // status blink
+    if (led_on) {
         digitalWrite(G_GREEN_LED, HIGH);
-        delay(100);
+        led_on = false;
+    }
+    else {
         digitalWrite(G_GREEN_LED, LOW);
+        led_on = true;
+    }
+
+    if (Touch.dataAvailable()) {
+        delay(100);
 
         Touch.read();
         tx = Touch.getX();
