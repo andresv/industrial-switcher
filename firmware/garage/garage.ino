@@ -81,6 +81,9 @@
 #define HIGH_TEMP 60
 #define HIGH_TEMP_TIME 60*60 // seconds
 
+#define SAVED_STATE_FRAM_ADDRESS 0xFF1C
+#define FRAM_MAGIC 0xCAFEBABE
+
 extern uint8_t SmallFont[];
 extern uint8_t SevenSegNumFont[];
 
@@ -94,10 +97,21 @@ int8_t current_temp_2;
 uint8_t temp_2_index = 0;
 int8_t temp_2_choices[] = {CONTROL_OFF, 25};
 
-uint32_t heater_start_timestamp = 0;
-uint32_t seconds_count = 0;
+uint32_t heater_last_timestamp = 0;
+bool heater_is_on = false;
+uint32_t milli_count = 0;
 bool hysteresis_1_raising = true;
 bool hysteresis_2_raising = false;
+
+unsigned long *fram_params_ptr;
+typedef struct {
+    uint32_t magic;
+    uint8_t temp_1_index;
+    uint8_t temp_2_index;
+    uint32_t milli_count;
+}fram_params_t;
+
+fram_params_t framparams;
 
 void draw_main_screen();
 void draw_set_temp_1();
@@ -107,6 +121,8 @@ void switch_out_1(bool onoff);
 void switch_out_2(bool onoff);
 void switch_out_3(bool onoff);
 void switch_out_4(bool onoff);
+void save_parameters_to_fram();
+void read_parameters_from_fram();
 
 void setup() {                
     pinMode(G_GREEN_LED, OUTPUT);
@@ -121,6 +137,9 @@ void setup() {
     TFT.InitLCD();
     Touch.InitTouch(LANDSCAPE);
     Touch.setPrecision(PREC_MEDIUM);
+
+    read_parameters_from_fram();
+
     draw_main_screen();
 }
 
@@ -156,10 +175,12 @@ void draw_set_temp_1() {
     else {
         // HIGH_TEMP degrees should be active only for 1 h
         if (temp_1_choices[temp_1_index] == HIGH_TEMP) {
-            heater_start_timestamp = millis();
+            heater_last_timestamp = millis();
+            heater_is_on = true;
         }
         else {
-            heater_start_timestamp = 0;
+            heater_is_on = false;
+            milli_count = 0;
             TFT.setColor(VGA_WHITE);
             TFT.setFont(SmallFont);
             TFT.print("      ", 149, 10);
@@ -267,12 +288,12 @@ int convert_raw_to_celsius(int rawtemp) {
 }
 
 int read_temp_1() {
-    uint16_t rawtemp = analogRead(NTC1_PIN);
+    uint16_t rawtemp = analogRead(NTC2_PIN);
     return convert_raw_to_celsius(rawtemp);
 }
 
 int read_temp_2() {
-    uint16_t rawtemp = analogRead(NTC2_PIN);
+    uint16_t rawtemp = analogRead(NTC1_PIN);
     return convert_raw_to_celsius(rawtemp);
 }
 
@@ -297,6 +318,26 @@ void read_temp_sensors() {
     TFT.setColor(VGA_WHITE);
     TFT.printNumI(current_temp_1, CUR_TEMP1_X, CUR_TEMP1_Y, 2, '0');
     TFT.printNumI(current_temp_2, CUR_TEMP2_X, CUR_TEMP2_Y, 2, '0');
+}
+
+void save_parameters_to_fram() {
+    framparams.magic = FRAM_MAGIC;
+    framparams.temp_1_index = temp_1_index;
+    framparams.temp_2_index = temp_2_index;
+    framparams.milli_count = milli_count;
+    fram_params_ptr = (unsigned long *)SAVED_STATE_FRAM_ADDRESS;
+    memcpy((void*)fram_params_ptr, &framparams, sizeof(fram_params_t));
+}
+
+void read_parameters_from_fram() {
+    fram_params_t* parameters;
+    fram_params_ptr = (unsigned long *)SAVED_STATE_FRAM_ADDRESS;
+    parameters = (fram_params_t*)fram_params_ptr;
+    if (parameters->magic == FRAM_MAGIC) {
+        temp_1_index = parameters->temp_1_index;
+        temp_2_index = parameters->temp_2_index;
+        milli_count = parameters->milli_count;
+    }
 }
 
 uint32_t tx=0;
@@ -340,21 +381,24 @@ void loop() {
     read_temp_sensors();
 
     // HIGH_TEMP degrees should be active only for 1 h
-    if (heater_start_timestamp > 0) {
-        seconds_count = (millis() - heater_start_timestamp) / 1000;
+    if (heater_is_on) {
+        uint32_t timestamp = millis();
+        milli_count += (timestamp - heater_last_timestamp);
+        heater_last_timestamp = timestamp;
 
-        if (seconds_count < HIGH_TEMP_TIME) {
+        if (milli_count/1000 < HIGH_TEMP_TIME) {
             TFT.setColor(VGA_WHITE);
             TFT.setFont(SmallFont);
-            TFT.printNumI((HIGH_TEMP_TIME - seconds_count) / 60, 149, 12, 2, '0');
+            TFT.printNumI((HIGH_TEMP_TIME - milli_count/1000) / 60, 149, 12, 2, '0');
             TFT.print(":", 164, 11);
-            TFT.printNumI((HIGH_TEMP_TIME - seconds_count) % 60, 172, 12, 2, '0');
+            TFT.printNumI((HIGH_TEMP_TIME - milli_count/1000) % 60, 172, 12, 2, '0');
         }
         else {
             TFT.setColor(VGA_WHITE);
             TFT.setFont(SmallFont);
             TFT.print("      ", 149, 10);
-            heater_start_timestamp = 0;
+            heater_is_on = false;
+            milli_count = 0;
             temp_1_index++;
             draw_set_temp_1();
         }
@@ -399,4 +443,6 @@ void loop() {
     else {
         switch_out_1(LOW);
     }
+
+    save_parameters_to_fram();
 }
