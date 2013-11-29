@@ -43,8 +43,9 @@
 #define OUTPUT_3 12
 #define OUTPUT_4 11
 
-#define NTC1_PIN A1 
+#define NTC1_PIN A1
 #define NTC2_PIN A0
+#define SMOOTHING_BUF_SIZE 65
 
 // graphics
 #define BOX_WIDTH 30
@@ -96,6 +97,13 @@ int8_t temp_1_choices[] = {CONTROL_OFF, HIGH_TEMP, 25};
 int8_t current_temp_2;
 uint8_t temp_2_index = 0;
 int8_t temp_2_choices[] = {CONTROL_OFF, 25};
+
+uint16_t temp_counter = 0;
+bool take_avarage = false;
+uint16_t last_temp_1_avg = 10;
+uint16_t last_temp_2_avg = 10;
+uint16_t temp_1_buf[SMOOTHING_BUF_SIZE];
+uint16_t temp_2_buf[SMOOTHING_BUF_SIZE];
 
 uint32_t heater_last_timestamp = 0;
 bool heater_is_on = false;
@@ -155,13 +163,13 @@ void draw_main_screen() {
 
     // color chamber
     TFT.setFont(SmallFont);
-    TFT.print("painting", 55, 10);
+    TFT.print("in", 80, 10);
     draw_set_temp_1();
 
     // garage
     TFT.setFont(SmallFont);
     TFT.setColor(VGA_WHITE);
-    TFT.print("garage", 65, 150);
+    TFT.print("out", 75, 150);
     draw_set_temp_2();
 }
 
@@ -279,25 +287,94 @@ int convert_raw_to_celsius(int rawtemp) {
         }
     }
 
-    // Overflow: We just clamp to 0 degrees celsius
+    // Overflow: We just clamp to 10 degrees celsius
     if (i == NUMTEMPS) {
-        current_celsius = 1000;
+        current_celsius = 10;
     }
 
     return current_celsius;
 }
 
+uint16_t temp_1_buf_calcavg() {
+    uint16_t sum = 0;
+    uint8_t i;
+    for (i = 0; i < SMOOTHING_BUF_SIZE; i++)
+        sum += temp_1_buf[i];
+    return (uint16_t)(sum / SMOOTHING_BUF_SIZE);
+}
+
+void temp_1_buf_append(uint16_t element) {
+    static uint8_t index = 0;
+    temp_1_buf[index] = element;
+    index++;
+    if (index == SMOOTHING_BUF_SIZE) {
+        index = 0;
+    }
+}
+
+uint16_t temp_2_buf_calcavg() {
+    uint16_t sum = 0;
+    uint8_t i;
+    for (i = 0; i < SMOOTHING_BUF_SIZE; i++)
+        sum += temp_2_buf[i];
+    return (uint16_t)(sum / SMOOTHING_BUF_SIZE);
+}
+
+void temp_2_buf_append(uint16_t element) {
+    static uint8_t index = 0;
+    temp_2_buf[index] = element;
+    index++;
+    if (index == SMOOTHING_BUF_SIZE) {
+        index = 0;
+    }
+}
+
 int read_temp_1() {
     uint16_t rawtemp = analogRead(NTC2_PIN);
-    return convert_raw_to_celsius(rawtemp);
+
+    if (take_avarage){
+        // filter out strange values
+        if (abs(last_temp_1_avg - rawtemp) > 100) {
+            rawtemp = last_temp_1_avg;
+        }
+        temp_1_buf_append(rawtemp);
+
+        last_temp_1_avg = temp_1_buf_calcavg();
+        return convert_raw_to_celsius(last_temp_1_avg);
+    }
+    else {
+        temp_1_buf_append(rawtemp);
+        last_temp_1_avg = rawtemp;
+        return convert_raw_to_celsius(rawtemp);
+    }
 }
 
 int read_temp_2() {
     uint16_t rawtemp = analogRead(NTC1_PIN);
-    return convert_raw_to_celsius(rawtemp);
+
+    if (take_avarage){
+        // filter out strange values
+        if (abs(last_temp_2_avg - rawtemp) > 100) {
+            rawtemp = last_temp_2_avg;
+        }
+        temp_2_buf_append(rawtemp);
+        last_temp_2_avg = temp_2_buf_calcavg();
+        return convert_raw_to_celsius(last_temp_2_avg);
+    }
+    else {
+        temp_2_buf_append(rawtemp);
+        last_temp_2_avg = rawtemp;
+        return convert_raw_to_celsius(rawtemp);
+    }
+
 }
 
 void read_temp_sensors() {
+    temp_counter++;
+    if (temp_counter > SMOOTHING_BUF_SIZE && !take_avarage) {
+        take_avarage = true;
+    }
+
     current_temp_1 = read_temp_1();
     current_temp_2 = read_temp_2();
 
