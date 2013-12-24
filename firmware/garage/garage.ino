@@ -31,10 +31,11 @@
  *
  * Author: Andres Vahter (andres.vahter@gmail.com)
  */
- 
+
 #include <UTFT.h>
 #include <UTouch.h>
 #include "ntctable.h"
+#include "garage.h"
 
 #define G_GREEN_LED 3
 #define G_RED_LED 4
@@ -43,9 +44,17 @@
 #define OUTPUT_3 12
 #define OUTPUT_4 11
 
+// temperature
 #define NTC1_PIN A1
 #define NTC2_PIN A0
-#define SMOOTHING_BUF_SIZE 65
+#define SMOOTHING_BUFFER_SIZE 5
+// It shows how many quick measurements are taken in the row for filtering
+#define FILTER_BUFFER_SIZE 5
+// It shows how many elements are discarded from the beginning
+// and at the end of buffer
+#define FILTER_OUT_COUNT 1
+// for example we have following sorted measurements: 34, 56, 56, 58, 60
+// 34 and 60 will be discarded if FILTER_OUT_COUNT is 1
 
 // graphics
 #define BOX_WIDTH 30
@@ -98,12 +107,13 @@ int8_t current_temp_2;
 uint8_t temp_2_index = 0;
 int8_t temp_2_choices[] = {CONTROL_OFF, 25};
 
-uint16_t temp_counter = 0;
-bool take_avarage = false;
-uint16_t last_temp_1_avg = 10;
-uint16_t last_temp_2_avg = 10;
-uint16_t temp_1_buf[SMOOTHING_BUF_SIZE];
-uint16_t temp_2_buf[SMOOTHING_BUF_SIZE];
+uint16_t filter_buf[FILTER_BUFFER_SIZE];
+container_t filter_container;
+
+short temp_1_buf[SMOOTHING_BUFFER_SIZE];
+container_t temp_1_container;
+short temp_2_buf[SMOOTHING_BUFFER_SIZE];
+container_t temp_2_container;
 
 uint32_t heater_last_timestamp = 0;
 bool heater_is_on = false;
@@ -131,8 +141,37 @@ void switch_out_3(bool onoff);
 void switch_out_4(bool onoff);
 void save_parameters_to_fram();
 void read_parameters_from_fram();
+int convert_raw_to_celsius(int rawtemp);
 
-void setup() {                
+void init_containers() {
+    short temp;
+    uint8_t i;
+
+    filter_container.index = 0;
+    filter_container.len = FILTER_BUFFER_SIZE;
+    filter_container.buffer = (short*)filter_buf;
+
+    temp_1_container.index = 0;
+    temp_1_container.len = SMOOTHING_BUFFER_SIZE;
+    temp_1_container.buffer = temp_1_buf;
+
+    temp_2_container.index = 0;
+    temp_2_container.len = SMOOTHING_BUFFER_SIZE;
+    temp_2_container.buffer = temp_2_buf;
+
+    // fill in averaging buffers with initial temperature values
+    temp = convert_raw_to_celsius(analogRead(NTC2_PIN)); // temp_1 is NTC2
+    for (i=0; i<SMOOTHING_BUFFER_SIZE; i++) {
+        temp_1_container.buffer[i] = temp;
+    }
+
+    temp = convert_raw_to_celsius(analogRead(NTC1_PIN)); // temp_2 is NTC1
+    for (i=0; i<SMOOTHING_BUFFER_SIZE; i++) {
+        temp_2_container.buffer[i] = temp;
+    }
+}
+
+void setup() {
     pinMode(G_GREEN_LED, OUTPUT);
     pinMode(G_RED_LED, OUTPUT);
     P2DIR |= (1<<4); // OUTPUT_1
@@ -147,6 +186,8 @@ void setup() {
     Touch.setPrecision(PREC_MEDIUM);
 
     read_parameters_from_fram();
+
+    init_containers();
 
     draw_main_screen();
 }
@@ -287,97 +328,74 @@ int convert_raw_to_celsius(int rawtemp) {
         }
     }
 
-    // Overflow: We just clamp to 10 degrees celsius
+    // Overflow: Clamp to -50 degrees celsius
     if (i == NUMTEMPS) {
-        current_celsius = 10;
+        current_celsius = -50;
     }
 
     return current_celsius;
 }
 
-uint16_t temp_1_buf_calcavg() {
-    uint16_t sum = 0;
+void container_append(container_t* container, short element) {
+    container->buffer[container->index] = element;
+    container->index++;
+    if (container->index == container->len) {
+        container->index = 0;
+    }
+}
+
+short container_average(container_t* container) {
+    short sum = 0;
     uint8_t i;
-    for (i = 0; i < SMOOTHING_BUF_SIZE; i++)
-        sum += temp_1_buf[i];
-    return (uint16_t)(sum / SMOOTHING_BUF_SIZE);
+
+    for (i = 0; i < container->len; i++) {
+        sum += container->buffer[i];
+    }
+    return (sum / container->len);
 }
 
-void temp_1_buf_append(uint16_t element) {
-    static uint8_t index = 0;
-    temp_1_buf[index] = element;
-    index++;
-    if (index == SMOOTHING_BUF_SIZE) {
-        index = 0;
+void container_sort(container_t* container) {
+    // bubble sort
+    uint8_t i, j;
+    short temp;
+
+    for (i=0; i<container->len ; i++) {
+       for (j=0; j<(container->len-1)-i; j++) {
+         if (container->buffer[j] < container->buffer[j+1] ) {
+            temp = container->buffer[j];
+            container->buffer[j] = container->buffer[j+1];
+            container->buffer[j+1] = temp;
+         }
+       }
     }
 }
 
-uint16_t temp_2_buf_calcavg() {
+int read_temp(int adc_nr) {
+    uint8_t i = 0;
     uint16_t sum = 0;
-    uint8_t i;
-    for (i = 0; i < SMOOTHING_BUF_SIZE; i++)
-        sum += temp_2_buf[i];
-    return (uint16_t)(sum / SMOOTHING_BUF_SIZE);
-}
 
-void temp_2_buf_append(uint16_t element) {
-    static uint8_t index = 0;
-    temp_2_buf[index] = element;
-    index++;
-    if (index == SMOOTHING_BUF_SIZE) {
-        index = 0;
-    }
-}
-
-int read_temp_1() {
-    uint16_t rawtemp = analogRead(NTC2_PIN);
-
-    if (take_avarage){
-        // filter out strange values
-        if (abs(last_temp_1_avg - rawtemp) > 100) {
-            rawtemp = last_temp_1_avg;
-        }
-        temp_1_buf_append(rawtemp);
-
-        last_temp_1_avg = temp_1_buf_calcavg();
-        return convert_raw_to_celsius(last_temp_1_avg);
-    }
-    else {
-        temp_1_buf_append(rawtemp);
-        last_temp_1_avg = rawtemp;
-        return convert_raw_to_celsius(rawtemp);
-    }
-}
-
-int read_temp_2() {
-    uint16_t rawtemp = analogRead(NTC1_PIN);
-
-    if (take_avarage){
-        // filter out strange values
-        if (abs(last_temp_2_avg - rawtemp) > 100) {
-            rawtemp = last_temp_2_avg;
-        }
-        temp_2_buf_append(rawtemp);
-        last_temp_2_avg = temp_2_buf_calcavg();
-        return convert_raw_to_celsius(last_temp_2_avg);
-    }
-    else {
-        temp_2_buf_append(rawtemp);
-        last_temp_2_avg = rawtemp;
-        return convert_raw_to_celsius(rawtemp);
+    // take couple of readings as fast as possible
+    for (i=0; i<FILTER_BUFFER_SIZE; i++) {
+        container_append(&filter_container, analogRead(adc_nr));
     }
 
+    // filter out smallest and biggest readings (might be outliers)
+    container_sort(&filter_container);
+    for (i=FILTER_OUT_COUNT; i<FILTER_BUFFER_SIZE - FILTER_OUT_COUNT; i++) {
+        sum += filter_container.buffer[i];
+    }
+
+    return convert_raw_to_celsius(sum/(FILTER_BUFFER_SIZE - 2*FILTER_OUT_COUNT));
 }
 
 void read_temp_sensors() {
-    temp_counter++;
-    if (temp_counter > SMOOTHING_BUF_SIZE && !take_avarage) {
-        take_avarage = true;
-    }
+    container_append(&temp_1_container, read_temp(NTC2_PIN));
+    current_temp_1 = container_average(&temp_1_container);
 
-    current_temp_1 = read_temp_1();
-    current_temp_2 = read_temp_2();
+    container_append(&temp_2_container, read_temp(NTC1_PIN));
+    current_temp_2 = container_average(&temp_2_container);
 
+    // only 2 digits can be shown and we do not support negative numbers
     if (current_temp_1 > 99) {
         current_temp_1 = 99;
     }
