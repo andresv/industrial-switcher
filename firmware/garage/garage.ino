@@ -264,52 +264,48 @@ void switch_out_4(bool onoff) {
     if (onoff) {
         digitalWrite(OUTPUT_4, HIGH);
         TFT.setColor(VGA_GREEN);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
         digitalWrite(OUTPUT_4, LOW);
         TFT.setColor(VGA_BLACK);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
     }
+    TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1, BOX_WIDTH-1, BOX_WIDTH + BOX_Y_OFFSET-1);
 }
 
 void switch_out_3(bool onoff) {
     if (onoff) {
         digitalWrite(OUTPUT_3, HIGH);
         TFT.setColor(VGA_GREEN);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
         digitalWrite(OUTPUT_3, LOW);
         TFT.setColor(VGA_BLACK);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
+    TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+1*BOX_WIDTH+1, BOX_WIDTH-1, 2*BOX_WIDTH + BOX_Y_OFFSET-1);
 }
 
 void switch_out_2(bool onoff) {
     if (onoff) {
         P2OUT |= (1<<3);
         TFT.setColor(VGA_GREEN);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
         P2OUT &= ~(1<<3);
         TFT.setColor(VGA_BLACK);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
+    TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+2*BOX_WIDTH+1, BOX_WIDTH-1, 3*BOX_WIDTH + BOX_Y_OFFSET-1);
 }
 
 void switch_out_1(bool onoff) {
     if (onoff) {
         P2OUT |= (1<<4);
         TFT.setColor(VGA_GREEN);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
     else {
         P2OUT &= ~(1<<4);
         TFT.setColor(VGA_BLACK);
-        TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
     }
+    TFT.fillRect(BOX_X_OFFSET+1, BOX_Y_OFFSET+3*BOX_WIDTH+1, BOX_WIDTH-1, 4*BOX_WIDTH + BOX_Y_OFFSET-1);
 }
 
 int convert_raw_to_celsius(int rawtemp) {
