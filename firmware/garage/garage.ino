@@ -47,7 +47,7 @@
 // temperature
 #define NTC1_PIN A1
 #define NTC2_PIN A0
-#define SMOOTHING_BUFFER_SIZE 5
+#define SMOOTHING_BUFFER_SIZE 2
 // It shows how many quick measurements are taken in the row for filtering
 #define FILTER_BUFFER_SIZE 5
 // It shows how many elements are discarded from the beginning
@@ -85,8 +85,8 @@
 #define T_IRQ_PIN 6
 
 // ON/OFF regulator
-#define UPPER_HYSTERESIS 5
-#define LOWER_HYSTERESIS 5
+#define UPPER_HYSTERESIS 3
+#define LOWER_HYSTERESIS 1
 #define CONTROL_OFF -127
 #define HIGH_TEMP 60
 #define HIGH_TEMP_TIME 60*60 // seconds
