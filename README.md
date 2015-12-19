@@ -2,11 +2,20 @@
 
 This board is meant for switching various 24V loads, like coils and relays.
 
-## Install
-UTFT and UTouch libraries should be copied or symlinked to your Energia libraries directory.
-For example:
+## Requirements
 
-	ln -s /Users/andres/Development/github/industrial-switcher/firmware/garage/UTFT/ /Users/andres/Documents/Energia/libraries/UTFT
-	ln -s /Users/andres/Development/github/industrial-switcher/firmware/garage/UTouch/ /Users/andres/Documents/Energia/libraries/UTouch
+[PlatformIO](http://platformio.org) is used for building.
+
+```
+pip install -U pip setuptools
+pip install -U platformio
+platformio platforms install timsp430
+```
+
+## Build and upload
+```
+platformio run
+platformio run --target upload
+```
 
 ## License
