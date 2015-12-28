@@ -181,6 +181,8 @@ void setup() {
     pinMode(NTC1_PIN, INPUT);
     pinMode(NTC2_PIN, INPUT);
 
+    digitalWrite(G_RED_LED, HIGH);
+
     TFT.InitLCD();
     Touch.InitTouch(LANDSCAPE);
     Touch.setPrecision(PREC_MEDIUM);
